@@ -1,0 +1,10 @@
+div{
+    width:960px;
+    height:640px;
+    margin: 0 auto;
+    text-align: center;
+}
+img{
+    display: none;
+    width: 0;
+}
