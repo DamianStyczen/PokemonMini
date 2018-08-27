@@ -4,11 +4,11 @@ import {Battle} from "./battle";
 
 let boardFields = [
     ["grass","grass", "grass", "grass","grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass"],
-    ["grass","grass", "bush", "bush", "bush", "bush", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass"],
-    ["grass","grass", "bush", "bush", "bush", "bush", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass"],
-    ["grass","grass", "bush", "bush", "bush", "bush", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass"],
-    ["grass","grass", "bush", "bush", "bush", "bush", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass"],
-    ["grass","grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass"],
+    ["bush","grass", "grass", "grass", "grass", "grass", "grass", "grass", "bush", "grass", "grass", "grass", "grass", "grass", "grass"],
+    ["bush","grass", "bush", "grass", "bush", "grass", "bush", "grass", "bush", "grass", "grass", "grass", "bush", "bush", "bush"],
+    ["bush","bush", "grass", "grass", "bush", "grass", "bush", "grass", "bush", "bush", "bush", "grass", "bush", "grass", "bush"],
+    ["bush","grass", "bush", "grass", "bush", "grass", "bush", "grass", "bush", "grass", "bush", "grass", "bush", "bush", "bush"],
+    ["bush","grass", "bush", "grass", "bush", "bush", "bush", "grass", "bush", "bush", "bush", "grass", "bush", "grass", "bush"],
     ["grass","grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass"],
     ["grass","grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass"],
     ["grass","grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass"],
@@ -21,7 +21,7 @@ const WORLDUNIT = 64;
 
 let red = new Character(7*WORLDUNIT, 4*WORLDUNIT, WORLDUNIT, boardFields);
 let board = new Board(boardFields, WORLDUNIT);
-let battle = new Battle();
+let battle = new Battle(1, 6);
 
 const update = ()=>{
 
