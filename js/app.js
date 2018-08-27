@@ -21,15 +21,18 @@ const WORLDUNIT = 64;
 
 let red = new Character(7*WORLDUNIT, 4*WORLDUNIT, WORLDUNIT, boardFields);
 let board = new Board(boardFields, WORLDUNIT);
-let battle = new Battle(1, 6);
+let battle = new Battle(1, 1);
 
 const update = ()=>{
 
-    bCtx.clearRect(0,0,board.width,board.height);
+    bCtx.clearRect(0,0,canvas.width,canvas.height);
+    bCtx.fillStyle = "#eaecef";
+    bCtx.fillRect(0,0,canvas.width, canvas.height);
     //board.generateBackground(bCtx);
     //red.draw(bCtx);
-
+    bCtx.fillStyle = "#FF0000";
     battle.draw(bCtx, WORLDUNIT);
+    
 }
 
 window.addEventListener('keydown', function(event){

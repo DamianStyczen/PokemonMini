@@ -1,6 +1,8 @@
 class Battle{
     constructor(player, enemyID){
     this.player = player;
+    this.stage = "start";
+    this.currentChoice = "";
     $.ajax({
         url: "https://pokeapi.co/api/v2/pokemon/"+ enemyID +"/"
     }).done((result)=>{
@@ -10,7 +12,7 @@ class Battle{
         this.enemySprite.src  = this.enemy.sprites.front_default;
     })
     $.ajax({
-        url: "https://pokeapi.co/api/v2/pokemon/151/"
+        url: "https://pokeapi.co/api/v2/pokemon/2/"
     }).done((result)=>{
         this.friendly = result;
         console.log(this.enemy);
@@ -18,10 +20,8 @@ class Battle{
         this.friendlySprite.src  = this.friendly.sprites.back_default;
     })
 
-        this.friendlySprite = new Image();
-        this.friendlySprite.src  = "this.friendly.sprites.back_default";
-
     }
+
     draw(context, baseUnit){
         let battleCircleSprite = document.getElementById("battleCircleSprite");
         context.drawImage(battleCircleSprite, 0, 0, battleCircleSprite.width, battleCircleSprite.height, baseUnit*6, baseUnit*3, battleCircleSprite.width, battleCircleSprite.height);
@@ -30,7 +30,83 @@ class Battle{
         context.drawImage(this.friendlySprite, 0, 0, 96, 96, baseUnit*2, baseUnit*3, 5*64, 5*64);
 
 
+        // ENEMY STATS WINDOW
+        context.fillStyle = "#FFF";
+        context.fillRect(50, 50, 400, 120);
+        context.fillStyle = "#000";
+        context.font = "40px Arial";
+        context.fillText(this.enemy.name, 80, 100);
+        context.font = "30px Arial";
+        context.fillText("HP", 150, 150);
+        context.fillStyle = "#000";
+        context.fillRect(200, 110, 200, 30);
+        context.fillStyle = "#33cc33";
+        context.fillRect(205, 115, 190, 20);
+        
+        // FRIENDLY STATS WINDOW
+
+        context.fillStyle = "#FFF";
+        context.fillRect(480, 320, 400, 120);
+        context.fillStyle = "#000";
+        context.font = "40px Arial";
+        context.fillText(this.friendly.name, 80, 100);
+        context.font = "30px Arial";
+        context.fillText("HP", 580, 420);
+
+        // DEFAULT MENU BACKGROUND AND FONT
+        context.fillStyle = "#3a4e70";
+        context.fillRect(0, 440, 960, 200);
+        context.fillStyle = "#FFF";
+        context.font = "40px Arial";
+
+        switch(this.stage){
+
+            case "start":
+                context.fillText(`Wild ${this.enemy.name} appeared!`,20, 510);
+                break;
+
+            case "options":
+                context.fillStyle = "#000";
+                context.fillRect(480, 440, 480, 200);
+                context.fillStyle = "#FFF";
+                context.fillRect(490, 450, 460, 180);  
+
+                context.fillText(`What will`,20, 510);
+                context.fillText(`${this.friendly.name} do?`,20, 600);
+
+            
+                context.fillStyle = "#000";
+                context.fillText(`FIGHT`,550, 510);
+                context.fillText(`POKeMON`,550, 600);
+                context.fillText(`BAG`,820, 510);
+                context.fillText(`RUN`,820, 600);
+
+                context.fillRect(510, 575, 20, 20);
+                break;
+            
+            case "fight":                
+
+                context.fillStyle = "#000";
+                context.fillRect(0, 440, 580, 200);
+                context.fillStyle = "#FFF";
+                context.fillRect(10, 450, 560, 180);
+                context.fillStyle = "#000";
+                context.fillText(`GROWL`,70, 510);
+                context.fillText(`SCRATCH`,70, 600);
+                context.fillText(`EMBER`,400, 510);
+                context.fillText(`RUN`,400, 600);
+                context.fillRect(30, 485, 20, 20); 
+            break;
+        
+        }
+        
+        
+
+
+
+        
     }
+    
 
 
 }
