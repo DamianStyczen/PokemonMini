@@ -1,7 +1,7 @@
 class Battle{
     constructor(player, enemyID){
     this.player = player;
-    this.stage = "start";
+    this.stage = "options";
     this.currentChoice = "";
     $.ajax({
         url: "https://pokeapi.co/api/v2/pokemon/"+ enemyID +"/"
@@ -21,7 +21,6 @@ class Battle{
     })
 
     }
-
     draw(context, baseUnit){
         let battleCircleSprite = document.getElementById("battleCircleSprite");
         context.drawImage(battleCircleSprite, 0, 0, battleCircleSprite.width, battleCircleSprite.height, baseUnit*6, baseUnit*3, battleCircleSprite.width, battleCircleSprite.height);
@@ -42,16 +41,20 @@ class Battle{
         context.fillRect(200, 110, 200, 30);
         context.fillStyle = "#33cc33";
         context.fillRect(205, 115, 190, 20);
-        
+
         // FRIENDLY STATS WINDOW
 
         context.fillStyle = "#FFF";
         context.fillRect(480, 320, 400, 120);
         context.fillStyle = "#000";
         context.font = "40px Arial";
-        context.fillText(this.friendly.name, 80, 100);
+        context.fillText(this.friendly.name, 510, 360);
         context.font = "30px Arial";
         context.fillText("HP", 580, 420);
+        context.fillStyle = "#000";
+        context.fillRect(630, 400, 200, 30);
+        context.fillStyle = "#33cc33";
+        context.fillRect(635, 405, 190, 20);
 
         // DEFAULT MENU BACKGROUND AND FONT
         context.fillStyle = "#3a4e70";
@@ -69,12 +72,12 @@ class Battle{
                 context.fillStyle = "#000";
                 context.fillRect(480, 440, 480, 200);
                 context.fillStyle = "#FFF";
-                context.fillRect(490, 450, 460, 180);  
+                context.fillRect(490, 450, 460, 180);
 
                 context.fillText(`What will`,20, 510);
                 context.fillText(`${this.friendly.name} do?`,20, 600);
 
-            
+
                 context.fillStyle = "#000";
                 context.fillText(`FIGHT`,550, 510);
                 context.fillText(`POKeMON`,550, 600);
@@ -83,8 +86,8 @@ class Battle{
 
                 context.fillRect(510, 575, 20, 20);
                 break;
-            
-            case "fight":                
+
+            case "fight":
 
                 context.fillStyle = "#000";
                 context.fillRect(0, 440, 580, 200);
@@ -95,19 +98,11 @@ class Battle{
                 context.fillText(`SCRATCH`,70, 600);
                 context.fillText(`EMBER`,400, 510);
                 context.fillText(`RUN`,400, 600);
-                context.fillRect(30, 485, 20, 20); 
+                context.fillRect(30, 485, 20, 20);
             break;
-        
+
         }
-        
-        
-
-
-
-        
     }
-    
-
 
 }
 

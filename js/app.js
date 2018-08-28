@@ -32,7 +32,7 @@ const update = ()=>{
     //red.draw(bCtx);
     bCtx.fillStyle = "#FF0000";
     battle.draw(bCtx, WORLDUNIT);
-    
+
 }
 
 window.addEventListener('keydown', function(event){
