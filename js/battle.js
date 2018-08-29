@@ -1,8 +1,11 @@
+import {UserInterface} from "./userInterface";
+
 class Battle{
-    constructor(player, enemyID){
+    constructor(player, enemyID, context){
     this.player = player;
-    this.stage = "options";
+    this.stage = "options-fight";
     this.currentChoice = "";
+    this.UI = new UserInterface(context);
     $.ajax({
         url: "https://pokeapi.co/api/v2/pokemon/"+ enemyID +"/"
     }).done((result)=>{
@@ -57,53 +60,55 @@ class Battle{
         context.fillRect(635, 405, 190, 20);
 
         // DEFAULT MENU BACKGROUND AND FONT
-        context.fillStyle = "#3a4e70";
-        context.fillRect(0, 440, 960, 200);
-        context.fillStyle = "#FFF";
-        context.font = "40px Arial";
+        // context.fillStyle = "#3a4e70";
+        // context.fillRect(0, 440, 960, 200);
+        // context.fillStyle = "#FFF";
+        // context.font = "40px Arial";
+        this.UI.drawDefault();
 
         switch(this.stage){
 
             case "start":
-                context.fillText(`Wild ${this.enemy.name} appeared!`,20, 510);
+                this.UI.drawMessage(`Wild ${this.enemy.name} appeared!`);
                 break;
 
             case "options":
-                context.fillStyle = "#000";
-                context.fillRect(480, 440, 480, 200);
-                context.fillStyle = "#FFF";
-                context.fillRect(490, 450, 460, 180);
+                this.UI.drawOptionsMenu(this.stage);
+                this.UI.drawChosenOption(2, this.stage);
+                // context.fillStyle = "#000";
+                // context.fillRect(480, 440, 480, 200);
+                // context.fillStyle = "#FFF";
+                // context.fillRect(490, 450, 460, 180);
 
-                context.fillText(`What will`,20, 510);
-                context.fillText(`${this.friendly.name} do?`,20, 600);
+                // context.fillText(`What will`,20, 510);
+                // context.fillText(`${this.friendly.name} do?`,20, 600);
 
 
-                context.fillStyle = "#000";
-                context.fillText(`FIGHT`,550, 510);
-                context.fillText(`POKeMON`,550, 600);
-                context.fillText(`BAG`,820, 510);
-                context.fillText(`RUN`,820, 600);
+                // context.fillStyle = "#000";
+                // context.fillText(`FIGHT`,550, 510);
+                // context.fillText(`POKeMON`,550, 600);
+                // context.fillText(`BAG`,820, 510);
+                // context.fillText(`RUN`,820, 600);
 
-                context.fillRect(510, 575, 20, 20);
+                // context.fillRect(510, 575, 20, 20);
                 break;
 
-            case "fight":
-
-                context.fillStyle = "#000";
-                context.fillRect(0, 440, 580, 200);
-                context.fillStyle = "#FFF";
-                context.fillRect(10, 450, 560, 180);
-                context.fillStyle = "#000";
-                context.fillText(`GROWL`,70, 510);
-                context.fillText(`SCRATCH`,70, 600);
-                context.fillText(`EMBER`,400, 510);
-                context.fillText(`RUN`,400, 600);
-                context.fillRect(30, 485, 20, 20);
+            case "options-fight":
+                this.UI.drawOptionsMenu(this.stage);
+                this.UI.drawChosenOption(3, this.stage);
+                // context.fillStyle = "#000";
+                // context.fillRect(0, 440, 580, 200);
+                // context.fillStyle = "#FFF";
+                // context.fillRect(10, 450, 560, 180);
+                // context.fillStyle = "#000";
+                // context.fillText(`GROWL`,70, 510);
+                // context.fillText(`SCRATCH`,70, 600);
+                // context.fillText(`EMBER`,400, 510);
+                // context.fillText(`RUN`,400, 600);
+                // context.fillRect(30, 485, 20, 20);
             break;
-
         }
     }
-
 }
 
 export {Battle};

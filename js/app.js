@@ -21,7 +21,7 @@ const WORLDUNIT = 64;
 
 let red = new Character(7*WORLDUNIT, 4*WORLDUNIT, WORLDUNIT, boardFields);
 let board = new Board(boardFields, WORLDUNIT);
-let battle = new Battle(1, 1);
+let battle = new Battle(1, 1, bCtx);
 
 const update = ()=>{
 
