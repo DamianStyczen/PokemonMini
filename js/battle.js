@@ -3,9 +3,42 @@ import {UserInterface} from "./userInterface";
 class Battle{
     constructor(player, enemyID, context){
     this.player = player;
-    this.stage = "options-fight";
-    this.currentChoice = "";
+    this.stage = "options";
+    this.stages = ["start", "options"]
+    this.currentChoice = 0;
     this.UI = new UserInterface(context);
+    window.addEventListener('keyup', (()=>{
+        event.preventDefault();
+        switch(event.which){
+            case 37: // LEFT
+            this.currentChoice -= 1;
+            if(this.currentChoice < 0){
+                this.currentChoice = 4 + this.currentChoice;
+            }
+            break;
+            case 39: // RIGHT
+            this.currentChoice += 1;
+            if(this.currentChoice > 3){
+                this.currentChoice = this.currentChoice - 4;
+            }
+            break;
+            case 38: // UP
+            this.currentChoice -= 2;
+            if(this.currentChoice < 0){
+                this.currentChoice = 4 + this.currentChoice;
+            }
+            break;
+            case 40: // DOWN
+            this.currentChoice += 2;
+            if(this.currentChoice > 3){
+                this.currentChoice = this.currentChoice - 4;
+            }
+            case 90: // Z
+            this.acceptChoice();
+            break;
+        }
+    
+    }));
     $.ajax({
         url: "https://pokeapi.co/api/v2/pokemon/"+ enemyID +"/"
     }).done((result)=>{
@@ -59,11 +92,6 @@ class Battle{
         context.fillStyle = "#33cc33";
         context.fillRect(635, 405, 190, 20);
 
-        // DEFAULT MENU BACKGROUND AND FONT
-        // context.fillStyle = "#3a4e70";
-        // context.fillRect(0, 440, 960, 200);
-        // context.fillStyle = "#FFF";
-        // context.font = "40px Arial";
         this.UI.drawDefault();
 
         switch(this.stage){
@@ -73,42 +101,37 @@ class Battle{
                 break;
 
             case "options":
+                this.UI.drawMessage(`What will ${this.friendly.name.toUpperCase()} do?`);
                 this.UI.drawOptionsMenu(this.stage);
-                this.UI.drawChosenOption(2, this.stage);
-                // context.fillStyle = "#000";
-                // context.fillRect(480, 440, 480, 200);
-                // context.fillStyle = "#FFF";
-                // context.fillRect(490, 450, 460, 180);
-
-                // context.fillText(`What will`,20, 510);
-                // context.fillText(`${this.friendly.name} do?`,20, 600);
-
-
-                // context.fillStyle = "#000";
-                // context.fillText(`FIGHT`,550, 510);
-                // context.fillText(`POKeMON`,550, 600);
-                // context.fillText(`BAG`,820, 510);
-                // context.fillText(`RUN`,820, 600);
-
-                // context.fillRect(510, 575, 20, 20);
+                this.UI.drawChosenOption(this.currentChoice, this.stage);
                 break;
-
             case "options-fight":
                 this.UI.drawOptionsMenu(this.stage);
-                this.UI.drawChosenOption(3, this.stage);
-                // context.fillStyle = "#000";
-                // context.fillRect(0, 440, 580, 200);
-                // context.fillStyle = "#FFF";
-                // context.fillRect(10, 450, 560, 180);
-                // context.fillStyle = "#000";
-                // context.fillText(`GROWL`,70, 510);
-                // context.fillText(`SCRATCH`,70, 600);
-                // context.fillText(`EMBER`,400, 510);
-                // context.fillText(`RUN`,400, 600);
-                // context.fillRect(30, 485, 20, 20);
+                this.UI.drawChosenOption(this.currentChoice, this.stage);
+                break;
+        }
+    }
+    acceptChoice(){
+        switch(this.stage){
+            case "options":
+            this.acceptOptionsChoice();
+            break;
+            case "options-fight":
+            this.acceptFightChoice();
             break;
         }
     }
+    goBack(){
+
+    }
+    acceptOptionsChoice(){
+        switch(this.currentChoice){
+            case 0:
+            this.stage = "options-fight";
+            break;
+        }
+    }
+
 }
 
 export {Battle};

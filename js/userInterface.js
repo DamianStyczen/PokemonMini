@@ -22,13 +22,14 @@ class UserInterface{
         this.context.font = "40px Arial";
     }
     drawMessage(string){
+        console.log(string);
         if(string.length > 25){
             let cutIndex = string.indexOf(" ", 20);
             this.context.fillText(string.substr(0, cutIndex),20, 510);
             this.context.fillText(string.substr(cutIndex+1, string.length-1),20, 600);
         }
         else{
-            this.context.fillText("string",20, 510);
+            this.context.fillText(string,20, 510);
         }
     }
     drawOptionsMenu(stage){
