@@ -33,11 +33,12 @@ class Battle{
             if(this.currentChoice > 3){
                 this.currentChoice = this.currentChoice - 4;
             }
+            break;
             case 90: // Z
             this.acceptChoice();
             break;
         }
-    
+
     }));
     $.ajax({
         url: "https://pokeapi.co/api/v2/pokemon/"+ enemyID +"/"
