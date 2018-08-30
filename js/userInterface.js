@@ -21,8 +21,51 @@ class UserInterface{
         this.context.fillStyle = "#FFF";
         this.context.font = "40px Arial";
     }
+    drawBattleCircles(baseUnit){
+        let battleCircleSprite = document.getElementById("battleCircleSprite");
+        this.context.drawImage(battleCircleSprite, 0, 0, battleCircleSprite.width, battleCircleSprite.height, baseUnit*6, baseUnit*3, battleCircleSprite.width, battleCircleSprite.height);
+        this.context.drawImage(battleCircleSprite, 0, 0, battleCircleSprite.width, battleCircleSprite.height, baseUnit*0, baseUnit*6, battleCircleSprite.width, battleCircleSprite.height);
+        
+    }
+    drawEnemyStatsWindow(enemy){
+        if(enemy != undefined){
+            const maxHP = enemy.stats.find(element => {return element.name == "hp"}).value;  
+            const healthbarMaxWidth = 190;
+            let healthbarCurrentWidth = (enemy.currentHP/maxHP) * healthbarMaxWidth;
+            this.context.fillStyle = "#FFF";
+            this.context.fillRect(50, 50, 400, 120);
+            this.context.fillStyle = "#000";
+            this.context.font = "40px Arial";
+            this.context.fillText(enemy.name.toUpperCase(), 80, 100);
+            this.context.font = "30px Arial";
+            this.context.fillText("HP", 150, 135);
+            this.context.fillStyle = "#000";
+            this.context.fillRect(200, 110, 200, 30);
+            this.context.fillStyle = "#33cc33";
+            this.context.fillRect(205, 115, healthbarCurrentWidth, 20);
+        }
+    }
+    drawFriendlyStatsWindow(friendly){
+        if(friendly != undefined){
+            const maxHP = friendly.stats.find(element => {return element.name == "hp"}).value;  
+            const healthbarMaxWidth = 190;
+            let healthbarCurrentWidth = (friendly.currentHP/maxHP) * healthbarMaxWidth;
+            this.context.fillStyle = "#FFF";
+            this.context.fillRect(480, 320, 400, 120);
+            this.context.fillStyle = "#000";
+            this.context.font = "40px Arial";
+            this.context.fillText(friendly.name.toUpperCase(), 510, 360);
+            this.context.font = "30px Arial";
+            this.context.fillText("HP", 580, 425);
+            this.context.fillStyle = "#000";
+            this.context.fillRect(630, 400, 200, 30);
+            this.context.fillStyle = "#33cc33";
+            this.context.fillRect(635, 405, healthbarCurrentWidth, 20);
+            
+
+        }
+    }
     drawMessage(string){
-        console.log(string);
         if(string.length > 25){
             let cutIndex = string.indexOf(" ", 20);
             this.context.fillText(string.substr(0, cutIndex),20, 510);

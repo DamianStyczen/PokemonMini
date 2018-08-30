@@ -1,12 +1,17 @@
 import {UserInterface} from "./userInterface";
+import {Pokemon} from "./pokemon";
 
 class Battle{
     constructor(player, enemyID, context){
     this.player = player;
-    this.stage = "options";
-    this.stages = ["start", "options"]
+    this.stage = "loading";
     this.currentChoice = 0;
     this.UI = new UserInterface(context);
+    
+    this.enemy = new Pokemon(4, 1);
+    this.friendly = new Pokemon(25, 1);
+    
+
     window.addEventListener('keyup', (()=>{
         event.preventDefault();
         switch(event.which){
@@ -37,68 +42,36 @@ class Battle{
             case 90: // Z
             this.acceptChoice();
             break;
+            case 90: // X
+            this.goBack();
+            break;
         }
 
     }));
-    $.ajax({
-        url: "https://pokeapi.co/api/v2/pokemon/"+ enemyID +"/"
-    }).done((result)=>{
-        this.enemy = result;
-        console.log(this.enemy);
-        this.enemySprite = new Image();
-        this.enemySprite.src  = this.enemy.sprites.front_default;
-    })
-    $.ajax({
-        url: "https://pokeapi.co/api/v2/pokemon/2/"
-    }).done((result)=>{
-        this.friendly = result;
-        console.log(this.enemy);
-        this.friendlySprite = new Image();
-        this.friendlySprite.src  = this.friendly.sprites.back_default;
-    })
-
     }
     draw(context, baseUnit){
-        let battleCircleSprite = document.getElementById("battleCircleSprite");
-        context.drawImage(battleCircleSprite, 0, 0, battleCircleSprite.width, battleCircleSprite.height, baseUnit*6, baseUnit*3, battleCircleSprite.width, battleCircleSprite.height);
-        context.drawImage(battleCircleSprite, 0, 0, battleCircleSprite.width, battleCircleSprite.height, baseUnit*0, baseUnit*6, battleCircleSprite.width, battleCircleSprite.height);
-        context.drawImage(this.enemySprite, 0, 0, 96, 96, baseUnit*8, baseUnit*0, 5*64, 5*64);
-        context.drawImage(this.friendlySprite, 0, 0, 96, 96, baseUnit*2, baseUnit*3, 5*64, 5*64);
+        this.UI.drawBattleCircles(baseUnit);
 
+        if(this.stage != "loading"){
+            context.drawImage(this.friendly.spriteBack, 0, 0, 96, 96, baseUnit*2, baseUnit*3, 5*64, 5*64);
+            context.drawImage(this.enemy.spriteFront, 0, 0, 96, 96, baseUnit*8, baseUnit*0, 5*64, 5*64);
 
-        // ENEMY STATS WINDOW
-        context.fillStyle = "#FFF";
-        context.fillRect(50, 50, 400, 120);
-        context.fillStyle = "#000";
-        context.font = "40px Arial";
-        context.fillText(this.enemy.name, 80, 100);
-        context.font = "30px Arial";
-        context.fillText("HP", 150, 150);
-        context.fillStyle = "#000";
-        context.fillRect(200, 110, 200, 30);
-        context.fillStyle = "#33cc33";
-        context.fillRect(205, 115, 190, 20);
-
-        // FRIENDLY STATS WINDOW
-
-        context.fillStyle = "#FFF";
-        context.fillRect(480, 320, 400, 120);
-        context.fillStyle = "#000";
-        context.font = "40px Arial";
-        context.fillText(this.friendly.name, 510, 360);
-        context.font = "30px Arial";
-        context.fillText("HP", 580, 420);
-        context.fillStyle = "#000";
-        context.fillRect(630, 400, 200, 30);
-        context.fillStyle = "#33cc33";
-        context.fillRect(635, 405, 190, 20);
-
+            this.UI.drawEnemyStatsWindow(this.enemy);
+            this.UI.drawFriendlyStatsWindow(this.friendly);
+        }
+        
         this.UI.drawDefault();
 
         switch(this.stage){
-
+            case "loading":
+            this.UI.drawMessage("Loading...");
+            if(this.enemy.loaded && this.friendly.loaded){
+                console.log(this.friendly, this.enemy);
+                this.stage = "start";
+            }
+            break;
             case "start":
-                this.UI.drawMessage(`Wild ${this.enemy.name} appeared!`);
+                this.UI.drawMessage(`Wild ${this.enemy.name.toUpperCase()} appeared!`);
                 break;
 
             case "options":
@@ -114,16 +87,24 @@ class Battle{
     }
     acceptChoice(){
         switch(this.stage){
+            case "start":
+            this.stage = "options";
+            break;
             case "options":
             this.acceptOptionsChoice();
             break;
             case "options-fight":
             this.acceptFightChoice();
             break;
+            
         }
     }
     goBack(){
-
+        switch(this.stage){
+            case "options-fight":
+             this.stage = "options";
+            break;
+        }
     }
     acceptOptionsChoice(){
         switch(this.currentChoice){
@@ -131,6 +112,9 @@ class Battle{
             this.stage = "options-fight";
             break;
         }
+    }
+    acceptFightChoice(){
+        this.stage = "fight";
     }
 
 }
