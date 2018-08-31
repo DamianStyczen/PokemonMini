@@ -2,15 +2,15 @@ import {UserInterface} from "./userInterface";
 import {Pokemon} from "./pokemon";
 
 class Battle{
-    constructor(player, enemyID, context){
-    this.player = player;
+    constructor(playerID, enemyID, context){
+    // this.player = player;
     this.stage = "loading";
     this.currentChoice = 0;
     this.UI = new UserInterface(context);
-    
-    this.enemy = new Pokemon(4, 1);
-    this.friendly = new Pokemon(25, 1);
-    
+
+    this.enemy = new Pokemon(enemyID, 1);
+    this.friendly = new Pokemon(playerID, 1);
+
 
     window.addEventListener('keyup', (()=>{
         event.preventDefault();
@@ -59,7 +59,7 @@ class Battle{
             this.UI.drawEnemyStatsWindow(this.enemy);
             this.UI.drawFriendlyStatsWindow(this.friendly);
         }
-        
+
         this.UI.drawDefault();
 
         switch(this.stage){
@@ -96,7 +96,7 @@ class Battle{
             case "options-fight":
             this.acceptFightChoice();
             break;
-            
+
         }
     }
     goBack(){
