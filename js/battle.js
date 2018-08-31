@@ -8,8 +8,8 @@ class Battle{
     this.currentChoice = 0;
     this.UI = new UserInterface(context);
 
-    this.enemy = new Pokemon(enemyID, 1);
-    this.friendly = new Pokemon(playerID, 1);
+    this.enemy = new Pokemon(enemyID, 25);
+    this.friendly = new Pokemon(playerID, 25);
 
 
     window.addEventListener('keyup', (()=>{
@@ -80,7 +80,7 @@ class Battle{
                 this.UI.drawChosenOption(this.currentChoice, this.stage);
                 break;
             case "options-fight":
-                this.UI.drawOptionsMenu(this.stage);
+                this.UI.drawOptionsMenu(this.stage, this.friendly.learnedMoves);
                 this.UI.drawChosenOption(this.currentChoice, this.stage);
                 break;
         }

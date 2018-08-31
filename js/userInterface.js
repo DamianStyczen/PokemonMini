@@ -10,9 +10,9 @@ class UserInterface{
         ];
         this.fightOptions = [
             {text: "MOVE1", left: 70, top: 510},
-            {text: "MOVE2", left: 400, top: 510},
+            {text: "MOVE2", left: 350, top: 510},
             {text: "MOVE3", left: 70, top: 600},
-            {text: "MOVE4", left: 400, top: 600},
+            {text: "MOVE4", left: 350, top: 600},
         ];
     }
     drawDefault(){
@@ -75,8 +75,9 @@ class UserInterface{
             this.context.fillText(string,20, 510);
         }
     }
-    drawOptionsMenu(stage){
+    drawOptionsMenu(stage, array){
         let optionsArray;
+        
         switch(stage){
             case "options":
                 optionsArray = this.menuOptions;
@@ -87,6 +88,10 @@ class UserInterface{
             break;
             case "options-fight":
                 optionsArray = this.fightOptions;
+                if(array){
+                    optionsArray.forEach((element, index) => element.text = array[index].name.toUpperCase())                 
+                }
+                
                 this.context.fillStyle = "#000";
                 this.context.fillRect(0, 440, 580, 200);
                 this.context.fillStyle = "#FFF";
