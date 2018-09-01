@@ -13,6 +13,8 @@ class Character{
         this.nextStep = [this.positionX, this.positionY];
         this.animationFrame = 0;
         this.boardFields = boardFields;
+        this.encountered = false;
+
     }
     draw(context){
         const CHARSHEET = document.getElementById("characterSpritesheet");
@@ -77,10 +79,16 @@ class Character{
         }
         if(this.positionX == this.nextStep[0] && this.positionY == this.nextStep[1]){
             this.isMoving = false;
+            this.checkForEncounter(this.boardFields[this.positionY/this.WORLDUNIT][this.positionX/this.WORLDUNIT]);
             console.log("Stepped on: ", this.boardFields[this.positionY/this.WORLDUNIT][this.positionX/this.WORLDUNIT]);
-            localStorage.setItem("positionX", this.positionX);
-            localStorage.setItem("positionY", this.positionY);
-            localStorage.setItem("direction", this.direction);
+        }
+    }
+    checkForEncounter(ground){
+        if(ground == "bush"){
+            let dice = Math.random();
+            if(dice > 0.9){
+                this.encountered = true;
+            }
         }
     }
 

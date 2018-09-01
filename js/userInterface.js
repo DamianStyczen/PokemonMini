@@ -65,10 +65,12 @@ class UserInterface{
 
         }
     }
-    drawMessage(string){
-        if(string.length > 25){
-            let cutIndex = string.indexOf(" ", 20);
-            this.context.fillText(string.substr(0, cutIndex),20, 510);
+    drawMessage(string, isShort){
+        let lineCap = 25;
+        if(isShort) lineCap = 15;
+        if(string.length > lineCap){
+            let cutIndex = string.indexOf(" ", lineCap-5);
+            this.context.fillText(string.substr(0, cutIndex),lineCap-5, 510);
             this.context.fillText(string.substr(cutIndex+1, string.length-1),20, 600);
         }
         else{
@@ -87,6 +89,7 @@ class UserInterface{
                 this.context.fillRect(490, 450, 460, 180);
             break;
             case "options-fight":
+            this.context.font = "30px Arial";
                 optionsArray = this.fightOptions;
                 if(array){
                     optionsArray.forEach((element, index) => element.text = array[index].name.toUpperCase())                 
@@ -101,6 +104,7 @@ class UserInterface{
         }
 
         this.context.fillStyle = "#000";
+        
         this.context.fillText(optionsArray[0].text,optionsArray[0].left, optionsArray[0].top);
         this.context.fillText(optionsArray[1].text,optionsArray[1].left, optionsArray[1].top);
         this.context.fillText(optionsArray[2].text,optionsArray[2].left, optionsArray[2].top);

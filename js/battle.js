@@ -2,19 +2,19 @@ import {UserInterface} from "./userInterface";
 import {Pokemon} from "./pokemon";
 
 class Battle{
-    constructor(playerID, enemyID, context){
+    constructor(player, enemyID, context){
     // this.player = player;
     this.stage = "loading";
     this.currentChoice = 0;
     this.UI = new UserInterface(context);
-
+    this.player = player;
     this.enemy = new Pokemon(enemyID, 25);
-    this.friendly = new Pokemon(playerID, 25);
+    //this.friendly = player.pokemon[0];
+    this.friendly = new Pokemon(25, 25);
 
-
-    window.addEventListener('keyup', (()=>{
-        event.preventDefault();
-        switch(event.which){
+    }
+    handleKeyPress(which){
+        switch(which){
             case 37: // LEFT
             this.currentChoice -= 1;
             if(this.currentChoice < 0){
@@ -42,13 +42,12 @@ class Battle{
             case 90: // Z
             this.acceptChoice();
             break;
-            case 90: // X
+            case 88: // X
             this.goBack();
             break;
         }
-
-    }));
     }
+
     draw(context, baseUnit){
         this.UI.drawBattleCircles(baseUnit);
 
@@ -75,7 +74,7 @@ class Battle{
                 break;
 
             case "options":
-                this.UI.drawMessage(`What will ${this.friendly.name.toUpperCase()} do?`);
+                this.UI.drawMessage(`What will ${this.friendly.name.toUpperCase()} do?`, true);
                 this.UI.drawOptionsMenu(this.stage);
                 this.UI.drawChosenOption(this.currentChoice, this.stage);
                 break;
