@@ -9,10 +9,10 @@ class UserInterface{
             {text: "RUN", left: 820, top: 600},
         ];
         this.fightOptions = [
-            {text: "MOVE1", left: 70, top: 510},
-            {text: "MOVE2", left: 350, top: 510},
-            {text: "MOVE3", left: 70, top: 600},
-            {text: "MOVE4", left: 350, top: 600},
+            {text: "", left: 70, top: 510},
+            {text: "", left: 350, top: 510},
+            {text: "", left: 70, top: 600},
+            {text: "", left: 350, top: 600},
         ];
     }
     drawDefault(){
@@ -92,7 +92,9 @@ class UserInterface{
             this.context.font = "30px Arial";
                 optionsArray = this.fightOptions;
                 if(array){
-                    optionsArray.forEach((element, index) => element.text = array[index].name.toUpperCase())                 
+                    array.forEach((element, index) => {
+                        optionsArray[index].text = element.name.toUpperCase();
+                    })                 
                 }
                 
                 this.context.fillStyle = "#000";

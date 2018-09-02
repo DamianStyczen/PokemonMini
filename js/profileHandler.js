@@ -3,9 +3,8 @@ import {Pokemon} from "./pokemon";
 class ProfileHandler{
     constructor(){
         let localProfiles = JSON.parse(localStorage.getItem("profiles"));
-        console.log(localProfiles);
         if(localProfiles){
-            this.profiles = localProfiles;
+            this.profiles = localProfiles;            
         }
         else{
             this.profiles = [];
@@ -209,18 +208,24 @@ class ProfileHandler{
                 this.chosen = new Player(this.nameProvided, new Pokemon(this.selected*3+1, 5));
                 this.chosen.pokemon[0].name = this.starters[this.selected]; 
                 this.profiles.push(this.chosen);
-                console.log("All profiles:", this.profiles);
                 this.updateLocalStorage();
                 this.stage = "chosen";
             break;
         }
     }
     updateLocalStorage(){
-        setTimeout(()=>{
-            console.log("Updating local storage");        
-            localStorage.setItem("profiles", JSON.stringify(this.profiles));
+            this.awaitTime = 0;
+            this.updateID = setInterval(()=>{
+                if(this.chosen.pokemon[0].loaded){
+                    localStorage.setItem("profiles", JSON.stringify(this.profiles));
+                    clearInterval(this.updateID);
+                    console.log("Updating local storage. Await time:", this.awaitTime);        
+                }
+                else{
+                    this.awaitTime += 1;
+                }
 
-        }, 10000);
+            }, 1000);
     }
 }
 

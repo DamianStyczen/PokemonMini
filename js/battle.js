@@ -9,8 +9,10 @@ class Battle{
     this.UI = new UserInterface(context);
     this.player = player;
     this.enemy = new Pokemon(enemyID, 25);
-    //this.friendly = player.pokemon[0];
-    this.friendly = new Pokemon(25, 25);
+    this.friendly = player.pokemon[0];
+    this.friendly.spriteBack = new Image();
+    this.friendly.spriteBack.src = "https://img.pokemondb.net/sprites/black-white/back-normal/"+this.friendly.name+".png";
+    
 
     }
     handleKeyPress(which){
@@ -49,6 +51,7 @@ class Battle{
     }
 
     draw(context, baseUnit){
+        context.textAlign="left"; 
         this.UI.drawBattleCircles(baseUnit);
 
         if(this.stage != "loading"){
@@ -79,6 +82,7 @@ class Battle{
                 this.UI.drawChosenOption(this.currentChoice, this.stage);
                 break;
             case "options-fight":
+            console.log(this.friendly.learnedMoves);
                 this.UI.drawOptionsMenu(this.stage, this.friendly.learnedMoves);
                 this.UI.drawChosenOption(this.currentChoice, this.stage);
                 break;

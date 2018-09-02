@@ -5,23 +5,23 @@ class Pokemon{
         this.name;
         this.level = level;
         this.spriteFront = new Image();
-        this.spriteFront.src = "https://img.pokemondb.net/sprites/black-white/normal/"+this.name+".png";
         this.spriteBack = new Image();
-        this.spriteBack.src = "https://img.pokemondb.net/sprites/black-white/back-normal/"+this.name+".png";
+        this.spriteFrontSource;
+        this.spriteBackSource;
         this.stats = [];
         this.allMoves = [];
         this.learnedMoves = [];
         this.loaded = false;
         this.currentHP = 0;
         this.APIurl = "http://pokeapi.salestock.net/api/v2/";
-        //this.APIurl = "https://pokeapi.co/api/v2/" // POKEAPI.CO
 
         fetch( this.APIurl + "pokemon/"+ this.id +"/").then(data => data.json()).then((result) =>{
             this.name = result.name;
-            //this.spriteFront.src = result.sprites.front_default; //POKEAPI.CO
-            // this.spriteFront.src = "https://img.pokemondb.net/sprites/black-white/normal/"+this.name+".png";
-            // this.spriteBack.src = result.sprites.back_default; // POKEAPI.CO
-            // this.spriteBack.src = "https://img.pokemondb.net/sprites/black-white/back-normal/"+this.name+".png";
+
+            this.spriteFrontSource = "https://img.pokemondb.net/sprites/black-white/normal/"+this.name+".png";
+            this.spriteFront.src = this.spriteFrontSource;
+            this.spriteBackSource = "https://img.pokemondb.net/sprites/black-white/back-normal/"+this.name+".png";
+            this.spriteBack.src = this.spriteBackSource;
             result.stats.forEach((element)=>{
                 this.stats.push({name: element.stat.name, value: element.base_stat});
             });
@@ -37,6 +37,7 @@ class Pokemon{
             });
             this.allMoves.sort((a, b) => a.learnedAt - b.learnedAt);
             this.getLearnedMoves();
+            console.log("New pokemon loaded");
         })
     }
 
@@ -53,6 +54,12 @@ class Pokemon{
         })
         console.log("Learned moves:",this.learnedMoves);
 
+    }
+    refreshImages(){
+        this.spriteFront = new Image();
+        this.spriteFront.src = this.spriteFrontSource;
+        this.spriteBack = new Image();
+        this.spriteBack.src = this.spriteBackSource;
     }
 
 }
