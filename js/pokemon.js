@@ -8,6 +8,7 @@ class Pokemon{
         this.spriteBack = new Image();
         this.spriteFrontSource;
         this.spriteBackSource;
+        this.types = [];
         this.stats = [];
         this.allMoves = [];
         this.learnedMoves = [];
@@ -25,13 +26,17 @@ class Pokemon{
             result.stats.forEach((element)=>{
                 this.stats.push({name: element.stat.name, value: element.base_stat});
             });
-            this.loaded = true;
+            result.types.forEach((element)=>{
+                this.types.push(element.type.name);
+            });
+
+            //this.loaded = true;
             this.currentHP = this.stats.find(element => {return element.name == "hp"}).value;
             result.moves.forEach(element => {
                 element.version_group_details.forEach(version =>{
                     if(version.version_group.name == "firered-leafgreen" && version.level_learned_at != 0){
                     this.allMoves.push({name: element.move.name, learnedAt: version.level_learned_at, url: element.move.url});
-                    
+
                 }
                 })
             });
@@ -53,15 +58,20 @@ class Pokemon{
                 availableMoves.splice(Math.floor(Math.random()*availableMoves.length),1);
             }
             this.learnedMoves = availableMoves;
-            
-            /// FETCH MOVE DETAILS
-            this.learnedMoves.forEach(move => {
-                fetch(move.url).then(data => data.json()).then((result) =>{
-                    console.log("Learned move details: ", result);
-                    move = result;
-                })
-            })
+
+        }
+    )
+    /// FETCH MOVE DETAILS
+        this.learnedMoves.forEach((move, index) => {
+        fetch(move.url).then(data => data.json()).then((result) =>{
+            console.log("Learned move details: ", result);
+            move.details = result;
+            if(index == this.learnedMoves.length - 1){
+                this.loaded = true;
+                console.log("All moves loaded");
+            }
         })
+    })
 
     }
     refreshImages(){
@@ -69,6 +79,14 @@ class Pokemon{
         this.spriteFront.src = this.spriteFrontSource;
         this.spriteBack = new Image();
         this.spriteBack.src = this.spriteBackSource;
+    }
+
+    getHit(damage){
+        console.log(this.name + " (" + this.currentHP + "hp) gets hit for " + damage);
+        this.currentHP -= damage;
+        if(this.currentHP < 0){
+            this.currentHP = 0;
+        }
     }
 
 }

@@ -4,7 +4,7 @@ class ProfileHandler{
     constructor(){
         let localProfiles = JSON.parse(localStorage.getItem("profiles"));
         if(localProfiles){
-            this.profiles = localProfiles;            
+            this.profiles = localProfiles;
         }
         else{
             this.profiles = [];
@@ -23,13 +23,13 @@ class ProfileHandler{
     if(this.stage == "choose" || this.stage == "choose_starter")
         switch(which){
             case 37: // LEFT
-            if(this.selected == 0) this.selected = 1;            
-            else if(this.selected == 2) this.selected = 0;            
+            if(this.selected == 0) this.selected = 1;
+            else if(this.selected == 2) this.selected = 0;
             break;
 
             case 39: // RIGHT
-            if(this.selected == 1) this.selected = 0;            
-            else if(this.selected == 0) this.selected = 2;   
+            if(this.selected == 1) this.selected = 0;
+            else if(this.selected == 0) this.selected = 2;
             break;
             case 90: // Z
             this.acceptChoice();
@@ -41,13 +41,13 @@ class ProfileHandler{
         else if(this.stage == "choose_name")
         switch(which){
             case 37: // LEFT
-            this.selected = 0;           
-            break;    
+            this.selected = 0;
+            break;
             case 39: // RIGHT
-            this.selected = 1;   
+            this.selected = 1;
             break;
             case 38: // UP
-            this.selected = 1;            
+            this.selected = 1;
             break;
             case 40: // DOWN
             this.selected = 2;
@@ -62,7 +62,7 @@ class ProfileHandler{
             case 8: // DELETE
             if(this.selected ==0) this.nameString = this.nameString.substring(0, this.nameString.length-1);
             else this.goBack();
-            break;            
+            break;
             default:
             if(this.selected == 0) this.nameString+=String.fromCharCode(which);
             break;
@@ -72,7 +72,7 @@ class ProfileHandler{
 
     draw(context){
 
-        /// PROFILE BOXES        
+        /// PROFILE BOXES
         const boxWidth = 200;
         const boxHeight = 300;
         const margin = 90
@@ -88,7 +88,7 @@ class ProfileHandler{
             }
             context.fillStyle = "#fff";
             context.fillRect(element.left, element.top, element.width, element.height);
-            
+
         })
         switch(this.stage){
             case "choose":
@@ -104,11 +104,11 @@ class ProfileHandler{
     }
     drawProfileChoice(context, rects, boxWidth, boxHeight){
         context.font = "30px Arial";
-        context.textAlign="center"; 
+        context.textAlign="center";
         context.fillStyle = "#000";
         context.fillText("CHOOSE PROFILE",  rects[0].left + rects[0].width/2, rects[0].top/2);
         for(let i = 0; i < 3; i++){
-            if(this.profiles[i]){                
+            if(this.profiles[i]){
                 context.fillText(this.profiles[i].name.toUpperCase(), rects[i].left + rects[i].width/2, rects[i].top+50);
                 let image = new Image();
                 image.src = "https://img.pokemondb.net/sprites/black-white/normal/"+ this.profiles[i].pokemon[0].name +".png"
@@ -124,17 +124,17 @@ class ProfileHandler{
     }
 
     drawStarterChoice(context, rects, boxWidth, boxHeight){
-        
+
         context.font = "28px Arial";
-        context.textAlign="center"; 
+        context.textAlign="center";
         context.fillStyle = "#000";
         context.fillText("CHOOSE YOUR POKEMON",  rects[0].left + rects[0].width/2, rects[0].top/2);
         for(let i = 0; i < 3; i++){
-            if(i == this.selected){                
+            if(i == this.selected){
                 context.fillText(this.starters[i].toUpperCase(), rects[i].left + rects[i].width/2, rects[i].top+50);
                 let image = new Image();
                 image.src = "https://img.pokemondb.net/sprites/black-white/normal/" + this.starters[i] + ".png"
-                context.drawImage(image, 0, 0, image.width, image.height, rects[i].left, rects[i].top + 50, boxWidth, boxWidth);            
+                context.drawImage(image, 0, 0, image.width, image.height, rects[i].left, rects[i].top + 50, boxWidth, boxWidth);
             }
             else{
                 context.drawImage(this.defaultImage, 0, 0, this.defaultImage.width, this.defaultImage.height, rects[i].left + boxWidth/4, rects[i].top + 100, boxWidth/2, boxWidth/2);
@@ -143,10 +143,10 @@ class ProfileHandler{
     }
     drawNameChoice(context, rects, boxWidth, boxHeight){
         context.font = "30px Arial";
-        context.textAlign="center"; 
+        context.textAlign="center";
         context.fillStyle = "#000";
         context.fillText("TYPE YOUR NAME",  rects[0].left + rects[0].width/2, rects[0].top/2);
-        for(let i = 0; i < 3; i++){            
+        for(let i = 0; i < 3; i++){
                 context.drawImage(this.defaultImage, 0, 0, this.defaultImage.width, this.defaultImage.height, rects[i].left + boxWidth/4, rects[i].top + 100, boxWidth/2, boxWidth/2);
         }
         if(this.selected == 0){
@@ -172,7 +172,7 @@ class ProfileHandler{
         }
         else{
             context.fillStyle = "#FFF";
-            context.fillRect(660, 440, 300, 200);            
+            context.fillRect(660, 440, 300, 200);
         }
         context.font = "30px Arial";
         context.fillStyle = "#000";
@@ -183,7 +183,7 @@ class ProfileHandler{
 
 
     }
-    
+
 
     acceptChoice(){
         switch(this.stage){
@@ -196,7 +196,7 @@ class ProfileHandler{
                 else{
                     this.stage = "choose_name";
                     this.selected = 0;
-                
+
                 }
             break;
             case "choose_name":
@@ -206,7 +206,7 @@ class ProfileHandler{
             break;
             case "choose_starter":
                 this.chosen = new Player(this.nameProvided, new Pokemon(this.selected*3+1, 25));
-                this.chosen.pokemon[0].name = this.starters[this.selected]; 
+                this.chosen.pokemon[0].name = this.starters[this.selected];
                 this.profiles.push(this.chosen);
                 this.updateLocalStorage();
                 this.stage = "chosen";
@@ -219,7 +219,7 @@ class ProfileHandler{
                 if(this.chosen.pokemon[0].loaded){
                     localStorage.setItem("profiles", JSON.stringify(this.profiles));
                     clearInterval(this.updateID);
-                    console.log("Updating local storage. Await time:", this.awaitTime);        
+                    console.log("Updating local storage. Await time:", this.awaitTime);
                 }
                 else{
                     this.awaitTime += 1;

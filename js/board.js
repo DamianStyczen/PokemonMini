@@ -1,12 +1,12 @@
 class Board{
     constructor(baseUnit){
         this.boardFields = [
-            ["grass","grass", "grass", "grass","grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass"],
-            ["bush","grass", "grass", "grass", "grass", "grass", "grass", "grass", "bush", "grass", "grass", "grass", "grass", "grass", "grass"],
-            ["bush","grass", "bush", "grass", "bush", "grass", "bush", "grass", "bush", "grass", "grass", "grass", "bush", "bush", "bush"],
-            ["bush","bush", "grass", "grass", "bush", "grass", "bush", "grass", "bush", "bush", "bush", "grass", "bush", "grass", "bush"],
-            ["bush","grass", "bush", "grass", "bush", "grass", "bush", "grass", "bush", "grass", "bush", "grass", "bush", "bush", "bush"],
-            ["bush","grass", "bush", "grass", "bush", "bush", "bush", "grass", "bush", "bush", "bush", "grass", "bush", "grass", "bush"],
+            ["grass","grass", "grass", "grass","bush", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass"],
+            ["grass","grass", "grass", "grass", "bush", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass"],
+            ["bush","bush", "bush", "bush", "bush", "bush", "grass", "grass", "grass", "bush", "bush", "bush", "bush", "bush", "bush"],
+            ["bush","bush", "bush", "bush", "bush", "bush", "grass", "grass", "grass", "bush", "bush", "bush", "bush", "bush", "bush"],
+            ["bush","bush", "bush", "bush", "bush", "bush", "grass", "grass", "grass", "bush", "bush", "bush", "bush", "bush", "bush"],
+            ["bush","bush", "bush", "bush", "bush", "bush", "grass", "grass", "grass", "bush", "bush", "bush", "bush", "bush", "bush"],
             ["grass","grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass"],
             ["grass","grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass"],
             ["grass","grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass", "grass"],

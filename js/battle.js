@@ -8,11 +8,13 @@ class Battle{
     this.currentChoice = 0;
     this.UI = new UserInterface(context);
     this.player = player;
-    this.enemy = new Pokemon(enemyID, 25);
+    this.enemy = new Pokemon(5, 5);
+    this.lastModifier = 1;
+
     this.friendly = player.pokemon[0];
     this.friendly.spriteBack = new Image();
     this.friendly.spriteBack.src = "https://img.pokemondb.net/sprites/black-white/back-normal/"+this.friendly.name+".png";
-    
+
 
     }
     handleKeyPress(which){
@@ -51,7 +53,7 @@ class Battle{
     }
 
     draw(context, baseUnit){
-        context.textAlign="left"; 
+        context.textAlign="left";
         this.UI.drawBattleCircles(baseUnit);
 
         if(this.stage != "loading"){
@@ -85,6 +87,27 @@ class Battle{
                 this.UI.drawOptionsMenu(this.stage, this.friendly.learnedMoves);
                 this.UI.drawChosenOption(this.currentChoice, this.stage);
                 break;
+            case "fight1-name":
+            this.UI.drawMessage(`${this.friendly.name} uses ${this.friendly.learnedMoves[this.currentChoice].name}`);
+            break;
+            case "fight2-name":
+            this.UI.drawMessage(`${this.enemy.name} uses ${this.enemy.learnedMoves[this.currentChoice].name}`);
+            break;
+            case "fight1-attack":
+            case "fight2-attack":
+            if(this.lastModifier > 1){
+                this.UI.drawMessage(`It's super effective!`);
+            }
+            else if(this.lastModifier == 0){
+                this.UI.drawMessage(`It doesn't do anything...`);
+            }
+            else if(this.lastModifier < 1){
+                this.UI.drawMessage(`It's not very effective...'`);
+            }
+            else{
+                this.UI.drawMessage(`It's normal.'`);
+            }
+
         }
     }
     acceptChoice(){
@@ -97,6 +120,19 @@ class Battle{
             break;
             case "options-fight":
             this.acceptFightChoice();
+            break;
+            case "fight1-name":
+            this.enemy.getHit(this.calculateDamage(this.friendly, this.enemy, this.friendly.learnedMoves[this.currentChoice].details));
+            this.stage = "fight1-attack";
+            break;
+            case "fight1-attack":
+            this.stage = "fight2-name";
+            break;
+            case "fight2-name":
+            this.stage = "fight2-attack";
+            break;
+            case "fight2-attack":
+            this.stage = "options";
             break;
 
         }
@@ -116,8 +152,65 @@ class Battle{
         }
     }
     acceptFightChoice(){
-        this.stage = "fight";
+        console.log("chosen move:", this.friendly.learnedMoves[this.currentChoice].details);
+        this.stage = "fight1-name";
     }
+    calculateDamage(attackingPokemon, defendingPokemon, chosenMove){
+        let attack = attackingPokemon.stats.find(element => {return element.name == "attack"}).value;
+        let defense = defendingPokemon.stats.find(element => {return element.name == "defense"}).value;
+
+        let damage;
+        damage = (2*(attackingPokemon.level)/5 + 2);
+        damage *= chosenMove.power;
+        damage *= attack/defense;
+        damage = damage/50+2;
+        damage = damage * this.calculateTypeModifier(chosenMove.type.name, defendingPokemon.types);
+        damage = Math.floor(damage);
+        console.log("Calculated damage: ", damage);
+        return damage;
+    }
+
+    calculateTypeModifier(attackType, defenseTypes){
+        let modifier = 1;
+        const types = ["bug", "dragon", "electric", "fighting", "fire", "flying", "ghost", "grass", "ground", "ice", "normal", "poison", "psychic", "rock", "water"];
+
+        const matrixOfTypes = [
+            [1, 1, 1, 0.5, 0.5, 0.5, 1, 2, 1, 1, 1, 2, 2, 1, 1],
+            [1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0.5, 0.5, 1, 1, 2, 1, 0.5, 0, 1,1, 1, 1, 1, 2],
+            [0.5, 1, 1, 1, 1, 0.5, 0, 1, 1, 2, 2, 0.5, 0.5, 2, 1],
+            [2, 0.5, 1, 1, 0.5, 1, 1, 2, 1, 2, 1, 1, 1, 0.5, 0.5],
+            [2, 1, 0.5, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1,0.5, 1],
+            [1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 0, 1, 0, 1, 1],
+            [0.5, 0.5, 1, 1, 0.5, 0.5, 1, 0.5, 2, 1, 1, 0.5, 1, 2, 2],
+            [0.5, 1, 2, 1, 2, 0, 1, 0.5, 1, 1, 1, 2, 1, 2, 1],
+            [1, 2, 1, 1, 1, 2, 1, 2, 2, 0.5, 1, 1, 1, 1, 0.5],
+            [1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0.5, 1],
+            [2, 1, 1, 1, 1, 1, 0.5, 2, 0.5, 1, 1, 0.5, 1, 0.5, 1],
+            [1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 0.5, 1, 1],
+            [2, 1, 1, 0.5, 2, 2, 1, 1, 0.5, 2, 1, 1, 1, 1, 1],
+            [1, 0.5, 1, 1, 2, 1, 1, 0.5, 2, 1, 1, 1, 1, 2, 0.5]
+        ];
+
+
+
+            defenseTypes.forEach(element => {
+
+                modifier = modifier * (matrixOfTypes[types.indexOf(attackType)][types.indexOf(element)]);
+
+            })
+            if(!modifier){
+                console.log("Error. Modifier changed to 1.", "Attack type:", attackType, "Defense types:");
+                modifier = 1;
+            }
+            console.log("Attack type:", attackType, "Defense types:", defenseTypes, "Modifier:", modifier);
+            this.lastModifier = modifier;
+            return modifier;
+
+    }
+
+
+
 
 }
 
