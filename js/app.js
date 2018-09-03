@@ -94,7 +94,6 @@ function handleKeyPress(which){
 }
 
 function initializeWildBattle(){
-    getRandomPokemonId();
     battle = new Battle(player, getRandomPokemonId(), bCtx);
     stage = "battle";
 }

@@ -17,7 +17,7 @@ class Pokemon{
 
         fetch( this.APIurl + "pokemon/"+ this.id +"/").then(data => data.json()).then((result) =>{
             this.name = result.name;
-
+            console.log("API:", result);
             this.spriteFrontSource = "https://img.pokemondb.net/sprites/black-white/normal/"+this.name+".png";
             this.spriteFront.src = this.spriteFrontSource;
             this.spriteBackSource = "https://img.pokemondb.net/sprites/black-white/back-normal/"+this.name+".png";
@@ -44,6 +44,8 @@ class Pokemon{
     getLearnedMoves(){
         const availableMoves = [];
         this.allMoves.forEach(element => {
+
+            /// GET MOVES AVAILABLE IN FIRE RED AND LEARNED BY LEVELLING
             if(element.learnedAt <= this.level){
                 availableMoves.push(element);
             }
@@ -51,8 +53,15 @@ class Pokemon{
                 availableMoves.splice(Math.floor(Math.random()*availableMoves.length),1);
             }
             this.learnedMoves = availableMoves;
+            
+            /// FETCH MOVE DETAILS
+            this.learnedMoves.forEach(move => {
+                fetch(move.url).then(data => data.json()).then((result) =>{
+                    console.log("Learned move details: ", result);
+                    move = result;
+                })
+            })
         })
-        console.log("Learned moves:",this.learnedMoves);
 
     }
     refreshImages(){

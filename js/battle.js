@@ -82,7 +82,6 @@ class Battle{
                 this.UI.drawChosenOption(this.currentChoice, this.stage);
                 break;
             case "options-fight":
-            console.log(this.friendly.learnedMoves);
                 this.UI.drawOptionsMenu(this.stage, this.friendly.learnedMoves);
                 this.UI.drawChosenOption(this.currentChoice, this.stage);
                 break;

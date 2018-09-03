@@ -205,7 +205,7 @@ class ProfileHandler{
                 this.selected = 0;
             break;
             case "choose_starter":
-                this.chosen = new Player(this.nameProvided, new Pokemon(this.selected*3+1, 5));
+                this.chosen = new Player(this.nameProvided, new Pokemon(this.selected*3+1, 25));
                 this.chosen.pokemon[0].name = this.starters[this.selected]; 
                 this.profiles.push(this.chosen);
                 this.updateLocalStorage();
