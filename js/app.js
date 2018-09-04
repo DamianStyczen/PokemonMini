@@ -28,7 +28,7 @@ const update = ()=>{
     bCtx.fillRect(0,0,canvas.width, canvas.height);
 
     switch(stage){
-        case "profile": 
+        case "profile":
         profiles.draw(bCtx);
         if(profiles.stage == "chosen"){
             player = profiles.chosen;
@@ -36,7 +36,7 @@ const update = ()=>{
             stage = "board";
         }
         break;
-        case "board": 
+        case "board":
         board.generateBackground(bCtx);
         red.draw(bCtx);
         if(red.encountered){
@@ -46,10 +46,15 @@ const update = ()=>{
         }
         break;
         case "battle":
+        if(battle.over){
+            stage = "board";
+            profiles.updateLocalStorage();
+            break;
+        }
         bCtx.fillStyle = "#FF0000";
         battle.draw(bCtx, WORLDUNIT);
         break;
-        
+
     }
 }
 
