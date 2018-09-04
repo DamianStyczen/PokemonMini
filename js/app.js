@@ -28,7 +28,7 @@ const update = ()=>{
     bCtx.fillRect(0,0,canvas.width, canvas.height);
 
     switch(stage){
-        case "profile": 
+        case "profile":
         profiles.draw(bCtx);
         if(profiles.stage == "chosen"){
             player = profiles.chosen;
@@ -36,20 +36,25 @@ const update = ()=>{
             stage = "board";
         }
         break;
-        case "board": 
+        case "board":
         board.generateBackground(bCtx);
         red.draw(bCtx);
         if(red.encountered){
             red.encountered = false;
             console.log("Encountered wild pokemon");
-            initializeWildBattle();
+            startWildBattle();
         }
         break;
         case "battle":
+        if(battle.over){
+            stage = "board";
+            profiles.updateLocalStorage();
+            break;
+        }
         bCtx.fillStyle = "#FF0000";
         battle.draw(bCtx, WORLDUNIT);
         break;
-        
+
     }
 }
 
@@ -60,7 +65,7 @@ window.addEventListener('keydown', function(event){
         profiles.handleKeyPress(event.which);
         break;
         case "board":
-        handleKeyPress(event.which);
+        red.handleKeyPress(event.which);
         break;
         case "battle":
         battle.handleKeyPress(event.which);
@@ -72,28 +77,8 @@ let gameInterval = setInterval(()=>{
     update();
 }, 33.33);
 
-function handleKeyPress(which){
-    switch(which){
-        case 37:
-        red.rotate("left");
-        red.startMoving();
-        break;
-        case 39:
-        red.rotate("right");
-        red.startMoving();
-        break;
-        case 38:
-        red.rotate("up");
-        red.startMoving();
-        break;
-        case 40:
-        red.rotate("down");
-        red.startMoving();
-        break;
-    }
-}
 
-function initializeWildBattle(){
+function startWildBattle(){
     battle = new Battle(player, getRandomPokemonId(), bCtx);
     stage = "battle";
 }

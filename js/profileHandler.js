@@ -1,5 +1,6 @@
 import {Player} from "./player";
 import {Pokemon} from "./pokemon";
+
 class ProfileHandler{
     constructor(){
         let localProfiles = JSON.parse(localStorage.getItem("profiles"));

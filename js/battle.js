@@ -1,21 +1,21 @@
 import {UserInterface} from "./userInterface";
 import {Pokemon} from "./pokemon";
+import {Turn} from "./turn";
 
 class Battle{
     constructor(player, enemyID, context){
-    // this.player = player;
     this.stage = "loading";
+    this.over = false;
     this.currentChoice = 0;
     this.UI = new UserInterface(context);
     this.player = player;
-    this.enemy = new Pokemon(5, 5);
+    this.enemy = new Pokemon(enemyID, 5);
     this.lastModifier = 1;
 
     this.friendly = player.pokemon[0];
     this.friendly.spriteBack = new Image();
     this.friendly.spriteBack.src = "https://img.pokemondb.net/sprites/black-white/back-normal/"+this.friendly.name+".png";
-
-
+    this.turn;
     }
     handleKeyPress(which){
         switch(which){
@@ -88,26 +88,19 @@ class Battle{
                 this.UI.drawChosenOption(this.currentChoice, this.stage);
                 break;
             case "fight1-name":
-            this.UI.drawMessage(`${this.friendly.name} uses ${this.friendly.learnedMoves[this.currentChoice].name}`);
+            this.UI.drawMessage(this.turn.getMoveMessage(0));
             break;
             case "fight2-name":
-            this.UI.drawMessage(`${this.enemy.name} uses ${this.enemy.learnedMoves[this.currentChoice].name}`);
+            this.UI.drawMessage(this.turn.getMoveMessage(1));
             break;
             case "fight1-attack":
+            this.UI.drawMessage(this.turn.getHitMessage(0));
+            break;
             case "fight2-attack":
-            if(this.lastModifier > 1){
-                this.UI.drawMessage(`It's super effective!`);
-            }
-            else if(this.lastModifier == 0){
-                this.UI.drawMessage(`It doesn't do anything...`);
-            }
-            else if(this.lastModifier < 1){
-                this.UI.drawMessage(`It's not very effective...'`);
-            }
-            else{
-                this.UI.drawMessage(`It's normal.'`);
-            }
-
+            this.UI.drawMessage(this.turn.getHitMessage(1));
+            break;
+            case "fainted":
+            this.UI.drawMessage("Pokemon has fainted!");
         }
     }
     acceptChoice(){
@@ -119,20 +112,33 @@ class Battle{
             this.acceptOptionsChoice();
             break;
             case "options-fight":
-            this.acceptFightChoice();
+            this.turn = new Turn(this.friendly, this.enemy, this.currentChoice);
+            this.stage = "fight1-name";
             break;
             case "fight1-name":
-            this.enemy.getHit(this.calculateDamage(this.friendly, this.enemy, this.friendly.learnedMoves[this.currentChoice].details));
+            this.turn.executeAttack(0);
             this.stage = "fight1-attack";
             break;
             case "fight1-attack":
-            this.stage = "fight2-name";
+            if(this.turn.checkForFainted()){
+                this.stage = "fainted";
+            }
+            else this.stage = "fight2-name";
             break;
             case "fight2-name":
+            this.turn.executeAttack(1);
             this.stage = "fight2-attack";
             break;
             case "fight2-attack":
+            if(this.turn.checkForFainted()){
+                this.stage = "fainted";
+            }
             this.stage = "options";
+            this.currentChoice = 0;
+            break;
+            case "fainted":
+            this.over = true;
+
             break;
 
         }
@@ -148,6 +154,10 @@ class Battle{
         switch(this.currentChoice){
             case 0:
             this.stage = "options-fight";
+            break;
+
+            case 3:
+            this.over = true;
             break;
         }
     }

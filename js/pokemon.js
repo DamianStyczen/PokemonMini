@@ -44,6 +44,9 @@ class Pokemon{
             this.getLearnedMoves();
             console.log("New pokemon loaded");
         })
+
+        
+
     }
 
     getLearnedMoves(){
@@ -81,13 +84,13 @@ class Pokemon{
         this.spriteBack.src = this.spriteBackSource;
     }
 
-    getHit(damage){
-        console.log(this.name + " (" + this.currentHP + "hp) gets hit for " + damage);
-        this.currentHP -= damage;
-        if(this.currentHP < 0){
-            this.currentHP = 0;
-        }
-    }
+    // getHit(damage){
+    //     console.log(this.name + " (" + this.currentHP + "hp) gets hit for " + damage);
+    //     this.currentHP -= damage;
+    //     if(this.currentHP < 0){
+    //         this.currentHP = 0;
+    //     }
+    // }
 
 }
 

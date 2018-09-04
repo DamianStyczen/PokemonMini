@@ -86,12 +86,33 @@ class Character{
     checkForEncounter(ground){
         if(ground == "bush"){
             let dice = Math.random();
-            if(dice > 0.9){
+            if(dice > 0.1){
                 this.encountered = true;
             }
         }
     }
+    handleKeyPress(which){
+        switch(which){
+            case 37:
+            this.rotate("left");
+            this.startMoving();
+            break;
+            case 39:
+            this.rotate("right");
+            this.startMoving();
+            break;
+            case 38:
+            this.rotate("up");
+            this.startMoving();
+            break;
+            case 40:
+            this.rotate("down");
+            this.startMoving();
+            break;
+        }
+    }
 
 }
+
 
 export {Character};
