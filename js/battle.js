@@ -204,7 +204,8 @@ class Battle{
             this.currentChoice = 0;
             break;
             case "fainted":
-            if(this.player.pokemon.reduce((a, b) => {
+            if(this.friendly.currentHP <= 0 &&
+                this.player.pokemon.reduce((a, b) => {
                 return a + b.currentHP;
             }, 0) > 0){
 

@@ -96,7 +96,7 @@ class Character{
     checkForEncounter(ground){
         if(ground == "bush"){
             let dice = Math.random();
-            if(dice > 1){
+            if(dice > 0.2){
                 this.encountered = true;
             }
         }
