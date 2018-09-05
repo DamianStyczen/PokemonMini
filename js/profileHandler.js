@@ -112,7 +112,7 @@ class ProfileHandler{
             if(this.profiles[i]){
                 context.fillText(this.profiles[i].name.toUpperCase(), rects[i].left + rects[i].width/2, rects[i].top+50);
                 let image = new Image();
-                image.src = "https://img.pokemondb.net/sprites/black-white/normal/"+ this.profiles[i].pokemon[0].name +".png"
+                image.src = "https://img.pokemondb.net/sprites/black-white/normal/"+ this.profiles[i].pokemon[0].name +".png";
                 context.drawImage(image, 0, 0, image.width, image.height, rects[i].left, rects[i].top + 50, boxWidth, boxWidth);
 
             }

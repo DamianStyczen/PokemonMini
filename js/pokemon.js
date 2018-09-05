@@ -30,7 +30,6 @@ class Pokemon{
                 this.types.push(element.type.name);
             });
 
-            //this.loaded = true;
             this.currentHP = this.stats.find(element => {return element.name == "hp"}).value;
             result.moves.forEach(element => {
                 element.version_group_details.forEach(version =>{
@@ -45,7 +44,7 @@ class Pokemon{
             console.log("New pokemon loaded");
         })
 
-        
+
 
     }
 
@@ -83,14 +82,6 @@ class Pokemon{
         this.spriteBack = new Image();
         this.spriteBack.src = this.spriteBackSource;
     }
-
-    // getHit(damage){
-    //     console.log(this.name + " (" + this.currentHP + "hp) gets hit for " + damage);
-    //     this.currentHP -= damage;
-    //     if(this.currentHP < 0){
-    //         this.currentHP = 0;
-    //     }
-    // }
 
 }
 

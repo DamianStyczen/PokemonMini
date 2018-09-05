@@ -3,6 +3,7 @@ import {Character} from "./character";
 import {Battle} from "./battle";
 import {Player} from "./player";
 import {ProfileHandler} from "./profileHandler";
+import {PokemonHandler} from "./pokemonHandler";
 
 // SETTING UP CANVAS
 const canvas = document.getElementById("board");
@@ -13,6 +14,7 @@ const WORLDUNIT = 64;
 let stage = "profile";
 
 let profiles = new ProfileHandler();
+let pokemonHandler = new PokemonHandler();
 let player;
 let board = new Board(WORLDUNIT);
 let red = new Character(7*WORLDUNIT, 4*WORLDUNIT, WORLDUNIT, board.boardFields);
@@ -42,7 +44,7 @@ const update = ()=>{
         if(red.encountered){
             red.encountered = false;
             console.log("Encountered wild pokemon");
-            initializeWildBattle();
+            startWildBattle();
         }
         break;
         case "battle":
@@ -65,7 +67,7 @@ window.addEventListener('keydown', function(event){
         profiles.handleKeyPress(event.which);
         break;
         case "board":
-        handleKeyPress(event.which);
+        red.handleKeyPress(event.which);
         break;
         case "battle":
         battle.handleKeyPress(event.which);
@@ -77,28 +79,8 @@ let gameInterval = setInterval(()=>{
     update();
 }, 33.33);
 
-function handleKeyPress(which){
-    switch(which){
-        case 37:
-        red.rotate("left");
-        red.startMoving();
-        break;
-        case 39:
-        red.rotate("right");
-        red.startMoving();
-        break;
-        case 38:
-        red.rotate("up");
-        red.startMoving();
-        break;
-        case 40:
-        red.rotate("down");
-        red.startMoving();
-        break;
-    }
-}
 
-function initializeWildBattle(){
+function startWildBattle(){
     battle = new Battle(player, getRandomPokemonId(), bCtx);
     stage = "battle";
 }

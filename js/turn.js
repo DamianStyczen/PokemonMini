@@ -108,10 +108,10 @@ class Turn{
             return (`It doesn't do anything...`);
         }
         else if(this.lastModifier < 1){
-            return (`It's not very effective...'`);
+            return (`It's not very effective...`);
         }
         else{
-            return (`It's normal.'`);
+            return (`...`);
         }
     }
     checkForFainted(){

@@ -1,6 +1,7 @@
 import {UserInterface} from "./userInterface";
 import {Pokemon} from "./pokemon";
 import {Turn} from "./turn";
+import {PokemonHandler} from "./pokemonHandler";
 
 class Battle{
     constructor(player, enemyID, context){
@@ -11,11 +12,13 @@ class Battle{
     this.player = player;
     this.enemy = new Pokemon(enemyID, 5);
     this.lastModifier = 1;
-
+    this.errorMessage = "Error. Can't do that.";
     this.friendly = player.pokemon[0];
     this.friendly.spriteBack = new Image();
     this.friendly.spriteBack.src = "https://img.pokemondb.net/sprites/black-white/back-normal/"+this.friendly.name+".png";
     this.turn;
+    this.pokemonHandler = new PokemonHandler();
+    this.caught = false;
     }
     handleKeyPress(which){
         switch(which){
@@ -83,16 +86,20 @@ class Battle{
                 this.UI.drawOptionsMenu(this.stage);
                 this.UI.drawChosenOption(this.currentChoice, this.stage);
                 break;
+
+                case "options-pokemon":
+                this.UI.drawPokemonMenu(this.player.pokemon);
+                break;
             case "options-fight":
                 this.UI.drawOptionsMenu(this.stage, this.friendly.learnedMoves);
                 this.UI.drawChosenOption(this.currentChoice, this.stage);
                 break;
             case "fight1-name":
-            this.UI.drawMessage(this.turn.getMoveMessage(0));
-            break;
+                this.UI.drawMessage(this.turn.getMoveMessage(0));
+                break;
             case "fight2-name":
-            this.UI.drawMessage(this.turn.getMoveMessage(1));
-            break;
+                this.UI.drawMessage(this.turn.getMoveMessage(1));
+                break;
             case "fight1-attack":
             this.UI.drawMessage(this.turn.getHitMessage(0));
             break;
@@ -101,6 +108,21 @@ class Battle{
             break;
             case "fainted":
             this.UI.drawMessage("Pokemon has fainted!");
+            break;
+            case "error":
+            this.UI.drawMessage(this.errorMessage);
+            break;
+            case "catching":
+            this.UI.drawMessage("Trying to catch pokemon...   ");
+            break;
+            case "catching-result":
+            if(this.caught){
+                this.UI.drawMessage("Success! You have caught a pokemon!");
+            }
+            else{
+                this.UI.drawMessage("It failed!");
+            }
+            break;
         }
     }
     acceptChoice(){
@@ -133,13 +155,27 @@ class Battle{
             if(this.turn.checkForFainted()){
                 this.stage = "fainted";
             }
-            this.stage = "options";
+            else this.stage = "options";
             this.currentChoice = 0;
             break;
             case "fainted":
             this.over = true;
-
             break;
+            case "error":
+            this.stage = "options";
+            this.errorMessage = "Error. Can't do that.";
+            break;
+            case "catching":
+            this.caught = this.pokemonHandler.tryToCatch(this.player, this.enemy);
+            this.stage = "catching-result";
+            break;
+            case "catching-result":
+            if(this.caught){
+                this.over = true;
+            }
+            else{
+                this.stage = "options";
+            }
 
         }
     }
@@ -154,6 +190,21 @@ class Battle{
         switch(this.currentChoice){
             case 0:
             this.stage = "options-fight";
+            break;
+
+            case 1:
+            if(this.player.pokeballs > 0){
+                this.player.pokeballs -= 1;
+                this.stage = "catching";
+            }
+            else{
+                this.errorMessage = "Not enough pokeballs."
+                this.stage = "error";
+            }
+            break;
+
+            case 2:
+            this.stage = "options-pokemon";
             break;
 
             case 3:

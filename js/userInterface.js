@@ -4,7 +4,7 @@ class UserInterface{
         this.context = context;
         this.menuOptions = [
             {text: "FIGHT", left: 550, top: 510},
-            {text: "BAG", left: 820, top: 510},
+            {text: "CATCH", left: 820, top: 510},
             {text: "POKeMON", left: 550, top: 600},
             {text: "RUN", left: 820, top: 600},
         ];
@@ -25,11 +25,11 @@ class UserInterface{
         let battleCircleSprite = document.getElementById("battleCircleSprite");
         this.context.drawImage(battleCircleSprite, 0, 0, battleCircleSprite.width, battleCircleSprite.height, baseUnit*6, baseUnit*3, battleCircleSprite.width, battleCircleSprite.height);
         this.context.drawImage(battleCircleSprite, 0, 0, battleCircleSprite.width, battleCircleSprite.height, baseUnit*0, baseUnit*6, battleCircleSprite.width, battleCircleSprite.height);
-        
+
     }
     drawEnemyStatsWindow(enemy){
         if(enemy != undefined){
-            const maxHP = enemy.stats.find(element => {return element.name == "hp"}).value;  
+            const maxHP = enemy.stats.find(element => {return element.name == "hp"}).value;
             const healthbarMaxWidth = 190;
             let healthbarCurrentWidth = (enemy.currentHP/maxHP) * healthbarMaxWidth;
             this.context.fillStyle = "#FFF";
@@ -47,7 +47,7 @@ class UserInterface{
     }
     drawFriendlyStatsWindow(friendly){
         if(friendly != undefined){
-            const maxHP = friendly.stats.find(element => {return element.name == "hp"}).value;  
+            const maxHP = friendly.stats.find(element => {return element.name == "hp"}).value;
             const healthbarMaxWidth = 190;
             let healthbarCurrentWidth = (friendly.currentHP/maxHP) * healthbarMaxWidth;
             this.context.fillStyle = "#FFF";
@@ -61,7 +61,7 @@ class UserInterface{
             this.context.fillRect(630, 400, 200, 30);
             this.context.fillStyle = "#33cc33";
             this.context.fillRect(635, 405, healthbarCurrentWidth, 20);
-            
+
 
         }
     }
@@ -70,7 +70,10 @@ class UserInterface{
         if(isShort) lineCap = 15;
         if(string.length > lineCap){
             let cutIndex = string.indexOf(" ", lineCap-5);
-            this.context.fillText(string.substr(0, cutIndex),lineCap-5, 510);
+            if(cutIndex == -1){
+                cutIndex = string.length;
+            }
+            this.context.fillText(string.substr(0, cutIndex), 20, 510);
             this.context.fillText(string.substr(cutIndex+1, string.length-1),20, 600);
         }
         else{
@@ -79,7 +82,7 @@ class UserInterface{
     }
     drawOptionsMenu(stage, array){
         let optionsArray;
-        
+
         switch(stage){
             case "options":
                 optionsArray = this.menuOptions;
@@ -94,9 +97,9 @@ class UserInterface{
                 if(array){
                     array.forEach((element, index) => {
                         optionsArray[index].text = element.name.toUpperCase();
-                    })                 
+                    })
                 }
-                
+
                 this.context.fillStyle = "#000";
                 this.context.fillRect(0, 440, 580, 200);
                 this.context.fillStyle = "#FFF";
@@ -106,7 +109,7 @@ class UserInterface{
         }
 
         this.context.fillStyle = "#000";
-        
+
         this.context.fillText(optionsArray[0].text,optionsArray[0].left, optionsArray[0].top);
         this.context.fillText(optionsArray[1].text,optionsArray[1].left, optionsArray[1].top);
         this.context.fillText(optionsArray[2].text,optionsArray[2].left, optionsArray[2].top);
@@ -124,6 +127,49 @@ class UserInterface{
         }
         this.context.fillRect(optionsArray[number].left - 40, optionsArray[number].top - 25, 20, 20);
     }
+    drawPokemonMenu(pokemons, choice){
+        const boxWidth = 200;
+        const boxHeight = 300;
+        const margin = 90
+        const rects = [
+            {left: margin*2+boxWidth, top: 170, width: boxWidth, height: boxHeight},
+            {left: margin, top: 170, width: boxWidth, height: boxHeight},
+            {left: margin*3+boxWidth*2, top: 170, width: boxWidth, height: boxHeight},
+        ]
+        console.log("Drawing pokemon menu");
+        this.context.fillStyle = "#fff";
+        this.context.fillRect(0, 0, 960, 640);
+        this.context.fillStyle = "#000";
+        let positions = [
+            {left: 100, top: 100},
+            {left: 300, top: 100},
+            {left: 100, top: 300},
+            {left: 300, top: 300},
+            {left: 100, top: 500},
+            {left: 300, top: 500}
+        ];
+
+
+        pokemons.forEach((element, i) => {
+            let image = new Image();
+            image.src = "https://img.pokemondb.net/sprites/black-white/normal/"+ element.name +".png"
+
+            this.context.font = "28px Arial";
+            this.context.textAlign="center";
+            this.context.fillStyle = "#000";
+            this.context.fillText("CHOOSE YOUR POKEMON",  rects[0].left + rects[0].width/2, rects[0].top/2);
+
+            this.context.fillText(element.name.toUpperCase(), rects[i].left + rects[i].width/2, rects[i].top+50);
+
+            this.context.drawImage(image, 0, 0, image.width, image.height, rects[i].left, rects[i].top + 50, boxWidth, boxWidth);
+
+        })
+
+
+    }
+
+
+
 }
 
 export {UserInterface};
