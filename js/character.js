@@ -14,15 +14,15 @@ class Character{
         this.animationFrame = 0;
         this.boardFields = boardFields;
         this.encountered = false;
+        this.CHARSHEET = document.getElementById("characterSpritesheet");
 
     }
     draw(context){
-        const CHARSHEET = document.getElementById("characterSpritesheet");
         this.animationFrame ++;
         if(this.isMoving){
             this.move();
         }
-        context.drawImage(CHARSHEET, this.spriteX, this.spriteY, this.width, this.width, this.positionX, this.positionY, this.width, this.height);
+        context.drawImage(this.CHARSHEET, this.spriteX, this.spriteY, this.width, this.width, this.positionX, this.positionY, this.width, this.height);
     }
     rotate(newDirection){
         if(!this.isMoving){
@@ -46,6 +46,8 @@ class Character{
     startMoving(){
         if(!this.isMoving){
             this.isMoving = true;
+            let nSX = this.nextStep[0];
+            let nSY = this.nextStep[1];
             switch(this.direction){
                 case "down":
                     this.nextStep[1] += this.height;
@@ -59,6 +61,14 @@ class Character{
                 case "up":
                     this.nextStep[1] -= this.height;
                     break;
+            }
+            console.log(this.nextStep[0]/this.WORLDUNIT, this.nextStep[1]/this.WORLDUNIT);
+            if(!this.boardFields[this.nextStep[1]/this.WORLDUNIT][this.nextStep[0]/this.WORLDUNIT]){
+
+                console.log("Ground undefined. Can't move.");
+                this.isMoving = false;
+                this.nextStep[0] = nSX;
+                this.nextStep[1] = nSY;
             }
         }
     }
@@ -86,7 +96,7 @@ class Character{
     checkForEncounter(ground){
         if(ground == "bush"){
             let dice = Math.random();
-            if(dice > 0.1){
+            if(dice > 1){
                 this.encountered = true;
             }
         }

@@ -129,39 +129,41 @@ class UserInterface{
     }
     drawPokemonMenu(pokemons, choice){
         const boxWidth = 200;
-        const boxHeight = 300;
-        const margin = 90
+        const boxHeight = 200;
+        const topMargin = 90;
+        const margin = 80;
         const rects = [
-            {left: margin*2+boxWidth, top: 170, width: boxWidth, height: boxHeight},
-            {left: margin, top: 170, width: boxWidth, height: boxHeight},
-            {left: margin*3+boxWidth*2, top: 170, width: boxWidth, height: boxHeight},
+            {left: margin, top: topMargin, width: boxWidth, height: boxHeight},
+            {left: margin*2+boxWidth, top: topMargin, width: boxWidth, height: boxHeight},
+            {left: margin*3+boxWidth*2, top: topMargin, width: boxWidth, height: boxHeight},
+            {left: margin, top: topMargin*2+boxHeight, width: boxWidth, height: boxHeight},
+            {left: margin*2+boxWidth, top: topMargin*2+boxHeight, width: boxWidth, height: boxHeight},
+            {left: margin*3+boxWidth*2, top: topMargin*2+boxHeight, width: boxWidth, height: boxHeight},
         ]
-        console.log("Drawing pokemon menu");
-        this.context.fillStyle = "#fff";
+        this.context.fillStyle = "#eaecef";
         this.context.fillRect(0, 0, 960, 640);
         this.context.fillStyle = "#000";
-        let positions = [
-            {left: 100, top: 100},
-            {left: 300, top: 100},
-            {left: 100, top: 300},
-            {left: 300, top: 300},
-            {left: 100, top: 500},
-            {left: 300, top: 500}
-        ];
 
 
+        this.context.fillRect(rects[choice].left-5, rects[choice].top-5, rects[choice].width+10, rects[choice].height+10);
         pokemons.forEach((element, i) => {
             let image = new Image();
             image.src = "https://img.pokemondb.net/sprites/black-white/normal/"+ element.name +".png"
-
+            this.context.fillStyle = "#fff";
+            this.context.fillRect(rects[i].left, rects[i].top, rects[i].width, rects[i].height)
             this.context.font = "28px Arial";
             this.context.textAlign="center";
             this.context.fillStyle = "#000";
-            this.context.fillText("CHOOSE YOUR POKEMON",  rects[0].left + rects[0].width/2, rects[0].top/2);
+            this.context.fillText("CHOOSE YOUR POKEMON",  960/2, topMargin/2);
 
-            this.context.fillText(element.name.toUpperCase(), rects[i].left + rects[i].width/2, rects[i].top+50);
-
-            this.context.drawImage(image, 0, 0, image.width, image.height, rects[i].left, rects[i].top + 50, boxWidth, boxWidth);
+            this.context.fillText(element.name.toUpperCase(), rects[i].left + rects[i].width/2, rects[i].top+30);
+            if(element.currentHP > 0){
+                this.context.drawImage(image, 0, 0, image.width, image.height, rects[i].left, rects[i].top + 30, boxWidth, boxWidth);
+            }
+            else{
+                this.context.fillStyle = "#FF0000";
+                this.context.fillText("FAINTED",  rects[i].left + boxWidth/2, rects[i].top + boxHeight*3/5);
+            }
 
         })
 

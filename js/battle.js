@@ -13,45 +13,90 @@ class Battle{
     this.enemy = new Pokemon(enemyID, 5);
     this.lastModifier = 1;
     this.errorMessage = "Error. Can't do that.";
-    this.friendly = player.pokemon[0];
+    this.friendly = player.pokemon.find((element)=> element.currentHP > 0);
     this.friendly.spriteBack = new Image();
     this.friendly.spriteBack.src = "https://img.pokemondb.net/sprites/black-white/back-normal/"+this.friendly.name+".png";
     this.turn;
     this.pokemonHandler = new PokemonHandler();
     this.caught = false;
     }
+    loadFriendly(index){
+    this.friendly = this.player.pokemon[index];
+    this.friendly.spriteBack = new Image();
+    this.friendly.spriteBack.src = "https://img.pokemondb.net/sprites/black-white/back-normal/"+this.friendly.name+".png";
+    }
     handleKeyPress(which){
-        switch(which){
-            case 37: // LEFT
-            this.currentChoice -= 1;
-            if(this.currentChoice < 0){
-                this.currentChoice = 4 + this.currentChoice;
+        if(this.stage == "options-pokemon"){
+            let max = this.player.pokemon.length - 1;
+            switch(which){
+                case 37: // LEFT
+                this.currentChoice -= 1;
+                if(this.currentChoice < 0){
+                    this.currentChoice = max;
+                }
+                break;
+                case 39: // RIGHT
+                this.currentChoice += 1;
+                if(this.currentChoice > max){
+                    this.currentChoice = 0;
+                }
+                break;
+                case 38: // UP
+                this.currentChoice -= 3;
+                if(this.currentChoice < 0){
+                    this.currentChoice = max;
+                }
+                break;
+                case 40: // DOWN
+                this.currentChoice += 3;
+                if(this.currentChoice > max){
+                    this.currentChoice = 0;
+                }
+                break;
+                case 90: // Z
+                this.acceptChoice();
+                break;
+                case 88: // X
+                this.goBack();
+                break;
             }
-            break;
-            case 39: // RIGHT
-            this.currentChoice += 1;
-            if(this.currentChoice > 3){
-                this.currentChoice = this.currentChoice - 4;
+
+
+        }
+        else{
+            switch(which){
+
+                case 37: // LEFT
+                this.currentChoice -= 1;
+                if(this.currentChoice < 0){
+                    this.currentChoice = 4 + this.currentChoice;
+                }
+                break;
+                case 39: // RIGHT
+                this.currentChoice += 1;
+                if(this.currentChoice > 3){
+                    this.currentChoice = this.currentChoice - 4;
+                }
+                break;
+                case 38: // UP
+                this.currentChoice -= 2;
+                if(this.currentChoice < 0){
+                    this.currentChoice = 4 + this.currentChoice;
+                }
+                break;
+                case 40: // DOWN
+                this.currentChoice += 2;
+                if(this.currentChoice > 3){
+                    this.currentChoice = this.currentChoice - 4;
+                }
+                break;
+                case 90: // Z
+                this.acceptChoice();
+                break;
+                case 88: // X
+                this.goBack();
+                break;
             }
-            break;
-            case 38: // UP
-            this.currentChoice -= 2;
-            if(this.currentChoice < 0){
-                this.currentChoice = 4 + this.currentChoice;
-            }
-            break;
-            case 40: // DOWN
-            this.currentChoice += 2;
-            if(this.currentChoice > 3){
-                this.currentChoice = this.currentChoice - 4;
-            }
-            break;
-            case 90: // Z
-            this.acceptChoice();
-            break;
-            case 88: // X
-            this.goBack();
-            break;
         }
     }
 
@@ -88,7 +133,7 @@ class Battle{
                 break;
 
                 case "options-pokemon":
-                this.UI.drawPokemonMenu(this.player.pokemon);
+                this.UI.drawPokemonMenu(this.player.pokemon, this.currentChoice);
                 break;
             case "options-fight":
                 this.UI.drawOptionsMenu(this.stage, this.friendly.learnedMoves);
@@ -159,7 +204,13 @@ class Battle{
             this.currentChoice = 0;
             break;
             case "fainted":
-            this.over = true;
+            if(this.player.pokemon.reduce((a, b) => {
+                return a + b.currentHP;
+            }, 0) > 0){
+
+                this.stage = "options-pokemon";
+            }
+            else this.over = true;
             break;
             case "error":
             this.stage = "options";
@@ -176,12 +227,24 @@ class Battle{
             else{
                 this.stage = "options";
             }
+            break;
+            case "options-pokemon":
+                if(this.player.pokemon[this.currentChoice].currentHP > 0){
+                    this.loadFriendly(this.currentChoice);
+                    this.currentChoice = 0;
+                    this.stage = "options";
+                }
+            break;
 
         }
     }
     goBack(){
         switch(this.stage){
             case "options-fight":
+             this.stage = "options";
+            break;
+
+            case "options-pokemon":
              this.stage = "options";
             break;
         }
