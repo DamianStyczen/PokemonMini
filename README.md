@@ -1,5 +1,12 @@
 # PokemonMini
 
-Mocno ograniczony klon gry Pokemon Fire Red.
+Klon gry Pokemon Fire Red, działający w przeglądarce.
 
-Technologie: HTML5 Canvas + vanilla Javascript ES6.
+The Pokemon Fire Red clone, working in the browser.
+
+Technologies: HTML5 Canvas + vanilla Javascript ES6.
+
+
+
+
+
