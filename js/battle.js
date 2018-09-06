@@ -4,13 +4,13 @@ import {Turn} from "./turn";
 import {PokemonHandler} from "./pokemonHandler";
 
 class Battle{
-    constructor(player, enemyID, context){
+    constructor(player, enemy, context){
     this.stage = "loading";
     this.over = false;
     this.currentChoice = 0;
     this.UI = new UserInterface(context);
     this.player = player;
-    this.enemy = new Pokemon(enemyID, 5);
+    this.enemy = enemy;
     this.lastModifier = 1;
     this.errorMessage = "Error. Can't do that.";
     this.friendly = player.pokemon.find((element)=> element.currentHP > 0);
@@ -19,6 +19,7 @@ class Battle{
     this.turn;
     this.pokemonHandler = new PokemonHandler();
     this.caught = false;
+
     }
     loadFriendly(index){
     this.friendly = this.player.pokemon[index];
@@ -269,6 +270,7 @@ class Battle{
 
             case 2:
             this.stage = "options-pokemon";
+            this.currentChoice = 0;
             break;
 
             case 3:

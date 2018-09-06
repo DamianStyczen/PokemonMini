@@ -7,6 +7,7 @@ import {PokemonHandler} from "./pokemonHandler";
 import { UserInterface } from "./userInterface";
 import { Oak } from "./oak";
 import { BoardMenu } from "./boardMenu";
+import { Pokemon } from "./pokemon";
 
 // SETTING UP CANVAS
 const canvas = document.getElementById("board");
@@ -17,7 +18,7 @@ const WORLDUNIT = 64;
 
 let stage = "profile";
 
-let profiles = new ProfileHandler();
+const profiles = new ProfileHandler();
 let pokemonHandler = new PokemonHandler();
 let player;
 let board = new Board(WORLDUNIT);
@@ -27,7 +28,8 @@ let battle;
 let boardMenu;
 let redLastPositionX = 7*WORLDUNIT;
 let redLastPositionY = 4*WORLDUNIT;
-let red = new Character(redLastPositionX, redLastPositionY, WORLDUNIT, board.boardFields);
+const red = new Character(redLastPositionX, redLastPositionY, WORLDUNIT, board.boardFields);
+const enemies = [new Pokemon(getRandomPokemonId(), 5), new Pokemon(getRandomPokemonId(), 5), new Pokemon(getRandomPokemonId(), 5)];
 
 
 const update = ()=>{
@@ -74,6 +76,8 @@ const update = ()=>{
         case "battle":
         if(battle.over){
             stage = "board";
+            enemies.shift();
+            enemies.push(new Pokemon(getRandomPokemonId(), 5));
             profiles.updateLocalStorage();
             break;
         }
@@ -128,7 +132,7 @@ function interactWith(object){
     }
 }
 function startWildBattle(){
-    battle = new Battle(player, getRandomPokemonId(), bCtx);
+    battle = new Battle(player, enemies[0], bCtx);
     stage = "battle";
 }
 function getRandomPokemonId(){
