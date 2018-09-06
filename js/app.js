@@ -4,6 +4,8 @@ import {Battle} from "./battle";
 import {Player} from "./player";
 import {ProfileHandler} from "./profileHandler";
 import {PokemonHandler} from "./pokemonHandler";
+import { UserInterface } from "./userInterface";
+import { Oak } from "./oak";
 
 // SETTING UP CANVAS
 const canvas = document.getElementById("board");
@@ -18,6 +20,8 @@ let pokemonHandler = new PokemonHandler();
 let player;
 let board = new Board(WORLDUNIT);
 let red = new Character(7*WORLDUNIT, 4*WORLDUNIT, WORLDUNIT, board.boardFields);
+let ui = new UserInterface(bCtx);
+let oak;
 let battle;
 
 
@@ -38,6 +42,7 @@ const update = ()=>{
             stage = "board";
         }
         break;
+
         case "board":
         board.generateBackground(bCtx);
         red.draw(bCtx);
@@ -47,6 +52,14 @@ const update = ()=>{
             startWildBattle();
         }
         break;
+
+        case "board-oak":
+        board.generateBackground(bCtx);
+        red.draw(bCtx);
+        oak.draw();
+        if(oak.over) stage = "board";
+        break;
+
         case "battle":
         if(battle.over){
             stage = "board";
@@ -68,7 +81,13 @@ window.addEventListener('keydown', function(event){
         break;
         case "board":
         red.handleKeyPress(event.which);
+        if(event.which == "90") interactWith(red.checkForInteraction());
         break;
+
+        case "board-oak":
+        oak.handleKeyPress(event.which);
+        break;
+
         case "battle":
         battle.handleKeyPress(event.which);
         break;
@@ -79,7 +98,15 @@ let gameInterval = setInterval(()=>{
     update();
 }, 33.33);
 
-
+function interactWith(object){
+    switch(object){
+        case "oak":
+        oak = new Oak(player, bCtx);
+        console.log("hello player");
+        stage = "board-oak";
+        break;
+    }
+}
 function startWildBattle(){
     battle = new Battle(player, getRandomPokemonId(), bCtx);
     stage = "battle";

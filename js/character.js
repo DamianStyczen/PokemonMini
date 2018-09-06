@@ -18,7 +18,6 @@ class Character{
 
     }
     draw(context){
-        this.animationFrame ++;
         if(this.isMoving){
             this.move();
         }
@@ -62,10 +61,16 @@ class Character{
                     this.nextStep[1] -= this.height;
                     break;
             }
-            console.log(this.nextStep[0]/this.WORLDUNIT, this.nextStep[1]/this.WORLDUNIT);
-            if(!this.boardFields[this.nextStep[1]/this.WORLDUNIT][this.nextStep[0]/this.WORLDUNIT]){
+
+            if(!this.boardFields[this.nextStep[1]/this.WORLDUNIT] || !this.boardFields[this.nextStep[1]/this.WORLDUNIT][this.nextStep[0]/this.WORLDUNIT]){
 
                 console.log("Ground undefined. Can't move.");
+                this.isMoving = false;
+                this.nextStep[0] = nSX;
+                this.nextStep[1] = nSY;
+            }
+            else if (this.boardFields[this.nextStep[1]/this.WORLDUNIT][this.nextStep[0]/this.WORLDUNIT] == "oak"){
+                console.log("Can't walk over doctor Oak.");
                 this.isMoving = false;
                 this.nextStep[0] = nSX;
                 this.nextStep[1] = nSY;
@@ -119,7 +124,29 @@ class Character{
             this.rotate("down");
             this.startMoving();
             break;
+            
         }
+    }
+    checkForInteraction(){
+        let xPos = this.positionX;
+        let yPos = this.positionY;
+        switch(this.direction){
+            case "down":
+                yPos += this.height;
+                break;
+            case "left":
+                xPos -= this.width;
+                break;
+            case "right":
+                xPos += this.width;
+                break;
+            case "up":
+                yPos -= this.height;
+                break;
+        }
+        let object = this.boardFields[yPos/this.WORLDUNIT][xPos/this.WORLDUNIT];
+        console.log("Trying to interact with: ", object);
+        return object;
     }
 
 }

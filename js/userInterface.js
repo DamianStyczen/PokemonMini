@@ -66,6 +66,7 @@ class UserInterface{
         }
     }
     drawMessage(string, isShort){
+        this.context.fillStyle = "#fff";
         let lineCap = 25;
         if(isShort) lineCap = 15;
         if(string.length > lineCap){
@@ -84,6 +85,13 @@ class UserInterface{
         let optionsArray;
 
         switch(stage){
+            case "oak":
+            optionsArray = this.menuOptions;
+                this.context.fillStyle = "#000";
+                this.context.fillRect(480, 440, 480, 200);
+                this.context.fillStyle = "#FFF";
+                this.context.fillRect(490, 450, 460, 180);
+            break;
             case "options":
                 optionsArray = this.menuOptions;
                 this.context.fillStyle = "#000";
@@ -106,6 +114,8 @@ class UserInterface{
                 this.context.fillRect(10, 450, 560, 180);
                 this.context.fillStyle = "#000";
                 break;
+
+
         }
 
         this.context.fillStyle = "#000";
