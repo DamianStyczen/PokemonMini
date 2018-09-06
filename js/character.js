@@ -11,7 +11,6 @@ class Character{
         this.spriteY = 0;
         this.movementSpeed = 4;
         this.nextStep = [this.positionX, this.positionY];
-        this.animationFrame = 0;
         this.boardFields = boardFields;
         this.encountered = false;
         this.CHARSHEET = document.getElementById("characterSpritesheet");
@@ -95,13 +94,12 @@ class Character{
         if(this.positionX == this.nextStep[0] && this.positionY == this.nextStep[1]){
             this.isMoving = false;
             this.checkForEncounter(this.boardFields[this.positionY/this.WORLDUNIT][this.positionX/this.WORLDUNIT]);
-            console.log("Stepped on: ", this.boardFields[this.positionY/this.WORLDUNIT][this.positionX/this.WORLDUNIT]);
         }
     }
     checkForEncounter(ground){
         if(ground == "bush"){
             let dice = Math.random();
-            if(dice > 0.2){
+            if(dice > 0.8){
                 this.encountered = true;
             }
         }
@@ -124,7 +122,6 @@ class Character{
             this.rotate("down");
             this.startMoving();
             break;
-            
         }
     }
     checkForInteraction(){
