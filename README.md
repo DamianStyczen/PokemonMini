@@ -1,14 +1,17 @@
 # PokemonMini
 
-The Pokemon Fire Red clone, working in the browser.
+#The Pokemon Fire Red clone, working in the browser.
 
-Play: www.damianstyczen.github.io
+#Play: 
+www.damianstyczen.github.io
 
-Controls: Use arrows to move your characters, "Z" button to "Accept", "X" button to "Return".
+#Controls: 
+Use arrows to move your characters, "Z" button to "Accept", "X" button to "Return".
 
-Technologies: HTML5 Canvas + vanilla Javascript ES6.
+#Technologies: 
+HTML5 Canvas + vanilla Javascript ES6.
 
-Features:
+#Features:
 
 - Meet all 151 1st gen Pokemon.
 - Fight with wild Pokemon in the turn-based battle system.
@@ -17,7 +20,7 @@ Features:
 - Your progress is stored in the browser's local storage.
 - Accurate Pokemon data thanks to www.pokeapi.co.
 
-To do:
+#To do:
 
 - "Your Collection" screen to get access to all Pokemon you catch.
 - Pokemon levelling system - train your favourite Pokemon.
