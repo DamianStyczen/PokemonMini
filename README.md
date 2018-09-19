@@ -1,6 +1,6 @@
 # PokemonMini
 
-# The Pokemon Fire Red clone, working in the browser.
+The Pokemon Fire Red clone, working in the browser.
 
 # Play: 
 https://damianstyczen.github.io/PokemonMini/
