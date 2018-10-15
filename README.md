@@ -3,7 +3,7 @@
 The Pokemon Fire Red clone, working in the browser.
 
 # Play: 
-www.damianstyczen.github.io
+https://damianstyczen.github.io/PokemonMini/
 
 # Controls: 
 Use arrows to move your characters, "Z" button to "Accept", "X" button to "Return".
