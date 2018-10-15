@@ -14,7 +14,8 @@ class Pokemon{
         this.learnedMoves = [];
         this.loaded = false;
         this.currentHP = 0;
-        this.APIurl = "http://pokeapi.salestock.net/api/v2/";
+        this.APIurl = "https://pokeapi.co/api/v2/";
+        // this.APIurl = "http://pokeapi.salestock.net/api/v2/";
 
         fetch( this.APIurl + "pokemon/"+ this.id +"/").then(data => data.json()).then((result) =>{
             this.name = result.name;
